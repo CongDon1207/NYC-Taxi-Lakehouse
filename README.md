@@ -1,4 +1,3 @@
-```markdown
 # 🌀 API Data Ingestion with Kafka & Spark Streaming
 
 This project demonstrates a real-time data ingestion pipeline using **Apache Kafka**, **Apache Spark Streaming**, and **Apache Airflow**. The data is extracted from a public **API**, sent to Kafka, then processed by Spark Streaming, and finally stored in **Hadoop HDFS**.
@@ -23,8 +22,6 @@ This project demonstrates a real-time data ingestion pipeline using **Apache Kaf
 
 5. **Spark → HDFS**
    - Spark processes and writes the ingested data into HDFS for further processing or analysis.
-
----
 
 ## 🛠 Tech Stack
 
@@ -57,47 +54,6 @@ api-ingestion/
 └── README.md
 ```
 
----
-
-## 🚀 Getting Started
-
-### 1. Start the services with Docker Compose:
-```bash
-cd docker/
-docker-compose up -d
-```
-
-### 2. Run the Kafka producer:
-```bash
-python kafka_producer/producer.py
-```
-
-### 3. Trigger the Spark Streaming Job:
-```bash
-spark-submit spark_streaming/spark_kafka_consumer.py
-```
-
----
-
-## 💡 Use Cases
-
-- Real-time weather monitoring
-- Stock price streaming
-- IoT sensor data pipeline
-
----
-
 ## 📌 Authors
 
 - **Hung Nguyen** – [@hungfnguyen](https://github.com/hungfnguyen)
-
----
-
-## 📄 License
-
-This project is licensed under the MIT License.
-```
-
----
-
-Nếu bạn muốn mình tạo file `api_to_kafka_dag.py`, `producer.py`, hoặc `spark_kafka_consumer.py` mẫu thì nói nhé, mình generate code luôn cho bạn xài nhanh 🚀
