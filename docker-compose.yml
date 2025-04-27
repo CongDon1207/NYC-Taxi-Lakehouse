@@ -76,6 +76,7 @@ x-airflow-common:
     - ${AIRFLOW_PROJ_DIR:-.}/logs:/opt/airflow/logs
     - ${AIRFLOW_PROJ_DIR:-.}/config:/opt/airflow/config
     - ${AIRFLOW_PROJ_DIR:-.}/plugins:/opt/airflow/plugins
+    - ./scripts:/opt/airflow/scripts
   env_file: .env
   user: "${AIRFLOW_UID:-50000}:0"
   depends_on:
@@ -99,6 +100,8 @@ services:
       retries: 5
       start_period: 5s
     restart: always
+    networks:
+      - data_network
 
 
   airflow-webserver:
@@ -117,6 +120,8 @@ services:
       <<: *airflow-common-depends-on
       airflow-init:
         condition: service_completed_successfully
+    networks:
+      - data_network
     
 
 
@@ -134,6 +139,8 @@ services:
       <<: *airflow-common-depends-on
       airflow-init:
         condition: service_completed_successfully
+    networks:
+      - data_network
 
   airflow-triggerer:
     <<: *airflow-common
@@ -212,9 +219,9 @@ services:
       _AIRFLOW_WWW_USER_USERNAME: ${_AIRFLOW_WWW_USER_USERNAME:-airflow}
       _AIRFLOW_WWW_USER_PASSWORD: ${_AIRFLOW_WWW_USER_PASSWORD:-airflow}
       _PIP_ADDITIONAL_REQUIREMENTS: ''
-    # user: "0:0"
-    volumes:
-      - ${AIRFLOW_PROJ_DIR:-.}:/sources
+    user: "0:0"
+    networks:
+      - data_network
 
   airflow-cli:
     <<: *airflow-common
@@ -228,6 +235,8 @@ services:
       - bash
       - -c
       - airflow
+    networks:
+      - data_network
 
 
   # You can enable flower by adding "--profile flower" option e.g. docker-compose --profile flower up
@@ -239,6 +248,7 @@ networks:
   data_network:
     driver: bridge
     name: data_network
+    external: true
 volumes:
   postgres-db-volume:
   postgres_data_h: {}

@@ -59,7 +59,7 @@ if __name__ == "__main__":
     ws_url = f"wss://stream.binance.com:9443/ws/{stream_name}"
 
     # Kafka configuration
-    kafka_bootstrap_servers = "localhost:9092"
+    kafka_bootstrap_servers = "broker:29092"
     kafka_topic = "binance_trades"
 
     client = BinanceWebSocketClient(
