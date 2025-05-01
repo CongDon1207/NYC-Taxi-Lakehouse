@@ -1,0 +1,21 @@
+docker cp ./scripts/spark_stream_binance_to_hdfs.py spark-master:/opt/bitnami/spark/
+
+
+spark-submit \
+  --master spark://spark-master:7077 \
+  --packages \
+org.apache.spark:spark-sql-kafka-0-10_2.12:3.3.2,\
+org.apache.kafka:kafka-clients:2.8.1 \
+  /opt/bitnami/spark/spark_stream_binance_to_hdfs.py
+
+
+spark-submit \
+  --master spark://spark-master:7077 \
+  --deploy-mode client \
+  --jars $(echo /root/.ivy2/jars/*.jar | tr ' ' ',') \
+  --conf spark.executor.extraClassPath=$(echo /root/.ivy2/jars/*.jar | tr ' ' ':') \
+  --conf spark.driver.extraClassPath=$(echo /root/.ivy2/jars/*.jar | tr ' ' ':') \
+  /opt/bitnami/spark/spark_stream_binance_to_hdfs.py
+
+val df = spark.read.parquet("hdfs://tanhung-master:9000/lakehouse/binance_trades/")
+df.show()
