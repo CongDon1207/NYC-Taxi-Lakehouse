@@ -42,7 +42,7 @@ To start a cluster with **1 master and 5 slaves**:
 
 #### **Step 4: Verify the Installation**  
 
-After **Step 3**, you will be inside the **master container's CLI**, where you can interact with the cluster.
+After **Step 3**, you will be inside the **client container's CLI**, so to interact with the cluster you need go inside **master container's CLI** by the way run **ssh quochuy-master** you can change 'quochuy' by your hostname.
 
 
 💡 **Start the HDFS - YARN services:**  
@@ -61,6 +61,26 @@ This script runs a sample **Word Count** job to ensure that HDFS and YARN are fu
   ![word_count](https://github.com/user-attachments/assets/c16ecae4-3717-479c-a5d9-21574de8a3ea)
   ![answordcoutn](https://github.com/user-attachments/assets/05bffc7c-712c-43ef-92c4-1a653cc8cbc7)
 🚀 **If the Word Count job runs successfully, your system is fully operational!**
+
+After that you need comeback **client container's CLI** by the way **ssh quochuy-client** or **ctrl + d** to continue step 6.
+#### **Step 6: Run Spark Submit on Yarn** 
+
+Create folder store spark logs
+```sh
+  hdfs dfs -mkdir /spark-logs
+```
+Run spark on yarn
+```sh
+  spark-submit \
+  --class org.apache.spark.examples.SparkPi \
+  --master yarn \
+  --deploy-mode client \
+  --executor-memory 1G \
+  --num-executors 2 \
+  $SPARK_HOME/examples/jars/spark-examples_*.jar 10
+```
+If success you will see answear **Pi = 3,14159**
+  
 
 ---
 
