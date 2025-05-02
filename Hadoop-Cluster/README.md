@@ -1,3 +1,6 @@
+## 🏢 Spark on YARN Architecture Client Mode
+  ![image](https://github.com/user-attachments/assets/f0823592-32f3-43a9-9f48-9b5456fb685c)
+
 ## 🚀 **Installation Guide**  
 
 #### **Step 1: Clone the Repository**  
@@ -63,7 +66,7 @@ This script runs a sample **Word Count** job to ensure that HDFS and YARN are fu
 🚀 **If the Word Count job runs successfully, your system is fully operational!**
 
 After that you need comeback **client container's CLI** by the way **ssh quochuy-client** or **ctrl + d** to continue step 6.
-#### **Step 6: Run Spark Submit on Yarn** 
+#### **Step 6: Run Spark Submit on Yarn Client Mode** 
 
 Create folder store spark logs
 ```sh
@@ -92,9 +95,9 @@ Since the system uses **Docker Volumes** for **NameNode and DataNode**, please e
 
 ✅ **How to Ensure the Correct Number of Containers During Restart**:
 1. **Always restart with the same number of containers**:
-    ```sh
-    ./scripts/run-container.sh 6  # If you previously used 6 nodes
-    ```
+```sh
+  ./scripts/run-container.sh 6  # If you previously used 6 nodes
+```
 
 2. **Do not delete volumes when stopping the cluster.**  
 > If you just want to stop the cluster (without removing containers), use:
@@ -105,9 +108,9 @@ Since the system uses **Docker Volumes** for **NameNode and DataNode**, please e
 
 > If you want to remove the containers but **keep the volumes**, use:
 
-  ```sh
-    docker compose -f compose-dynamic.yaml down
-   ```
+```sh
+  docker compose -f compose-dynamic.yaml down
+```
 > Avoid using `docker compose -f compose-dynamic.yaml down -v` as it will remove all container and volumes data.
 
 ✅ **Check Existing Volumes**:
@@ -130,7 +133,7 @@ python rename-owner.py
 ```
 ---
 
-### 🌐 Interact with the Web UI  
+## 🌐 Interact with the Web UI  
 
 You can access the following web interfaces to monitor and manage your Hadoop cluster:  
 
@@ -139,10 +142,18 @@ You can access the following web interfaces to monitor and manage your Hadoop cl
 
 - **NameNode UI** → [http://localhost:9870](http://localhost:9870)  
   Displays HDFS file system details, block distribution, and overall health status.
+---
+## 📚 Reference Materials
+
+- **Spark Default Configuration**  
+  - [IBM Docs](https://www.ibm.com/docs/en/pasc/1.1.1?topic=files-spark-defaultsconf)  
+  - [Apache Spark Documentation](https://spark.apache.org/docs/latest/configuration.html)  
+  - [Spark Application Submission Guide](https://spark.apache.org/docs/latest/submitting-applications.html)  
+  - [Cloudera Sample Applications](https://docs.cloudera.com/cdp-private-cloud-base/7.3.1/running-spark-applications/topics/spark-run-sample-apps.html)  
 
 ---
 
 ## 📞 **Contact**  
-📧 Email: quochuy.working@gmail.com  
+📧 Email: [quochuy.working@gmail.com](mailto:quochuy.working@gmail.com)
 
 💬 Feel free to contribute and improve this project! 🚀
