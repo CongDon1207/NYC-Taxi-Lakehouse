@@ -38,6 +38,7 @@ To start a cluster with **1 master and 5 slaves**:
 ```sh
   ./scripts/run-container.sh 6 
 ```
+  ![image](https://github.com/user-attachments/assets/807d54a8-e3e2-498c-a9e1-07cff615a0eb)
 
 #### **Step 4: Verify the Installation**  
 
@@ -48,12 +49,18 @@ After **Step 3**, you will be inside the **master container's CLI**, where you c
 ```sh
   ./scripts/start-hdfs-yarn.sh
 ```
-
+  ![image](https://github.com/user-attachments/assets/65e9f6c1-082a-4471-8ba2-39a3a99c9585)
+  ![livedatanote](https://github.com/user-attachments/assets/b0c60eaf-86a1-4b6d-a939-c3241cc6d699)
+  ![yarn](https://github.com/user-attachments/assets/da3a7da5-100b-465f-8d1d-4f57ac9574a5)
+  
 #### **Step 5: Run a Word Count Test**  
 ```sh
   ./scripts/word_count.sh
 ```
 This script runs a sample **Word Count** job to ensure that HDFS and YARN are functioning correctly.
+  ![word_count](https://github.com/user-attachments/assets/c16ecae4-3717-479c-a5d9-21574de8a3ea)
+  ![answordcoutn](https://github.com/user-attachments/assets/05bffc7c-712c-43ef-92c4-1a653cc8cbc7)
+🚀 **If the Word Count job runs successfully, your system is fully operational!**
 
 ---
 
@@ -87,9 +94,7 @@ Since the system uses **Docker Volumes** for **NameNode and DataNode**, please e
 ```sh
 docker volume ls 
 ```
-
-
-🚀 **If the Word Count job runs successfully, your system is fully operational!**
+  ![image](https://github.com/user-attachments/assets/e4813531-94ee-463e-86f9-df9c5987a156)
 
 ---
 
