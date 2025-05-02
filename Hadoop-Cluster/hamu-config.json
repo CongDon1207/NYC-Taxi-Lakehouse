@@ -1,0 +1,30 @@
+{
+    "requiredFiles": [
+        "compose-dynamic.yaml",
+        "compose.yaml",
+        "hamu-config.json",
+
+        "config/compose.yaml",
+        "config/Dockerfile",
+
+        "config/hadoop-base/.bashrc",
+        "config/hadoop-base/Dockerfile",
+
+        "config/master/config/core-site.xml",
+        "config/master/config/hdfs-site.xml",
+        "config/master/config/mapred-site.xml",
+        "config/master/config/workers",
+        "config/master/config/yarn-site.xml",
+        "config/master/Dockerfile",
+
+        "config/worker/config/core-site.xml",
+        "config/worker/config/hdfs-site.xml",
+        "config/worker/config/yarn-site.xml",
+        "config/worker/Dockerfile",
+
+        "scripts/resize-number-worker.sh",
+        "scripts/run-container.sh"
+        
+    ],
+    "ownerName": "quochuy"
+}

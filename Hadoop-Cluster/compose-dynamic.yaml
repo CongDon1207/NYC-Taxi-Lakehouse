@@ -1,0 +1,80 @@
+networks:
+  hadoop-net:
+    driver: bridge
+
+services:
+  master:
+    image: master-official
+    container_name: master
+    hostname: quochuy-master
+    volumes:
+      - hdfs_namenode:/home/hadoopquochuy/hadoop/hadoop_data/hdfs/namenode
+      - ./scripts:/home/hadoopquochuy/scripts
+      - ./data:/home/hadoopquochuy/data
+
+    ports:
+      - "9004:9004"
+      - "9870:9870"
+
+    networks:
+      - hadoop-net
+    command: /bin/bash -c "service ssh start; tail -f /dev/null"
+    
+  worker1:
+    image: worker
+    container_name: worker1
+    hostname: quochuy-worker1
+    volumes:
+      - hdfs_datanode1:/home/hadoopquochuy/hadoop/hadoop_data/hdfs/datanode
+    networks:
+      - hadoop-net
+    command: /bin/bash -c "service ssh start; tail -f /dev/null"
+
+  worker2:
+    image: worker
+    container_name: worker2
+    hostname: quochuy-worker2
+    volumes:
+      - hdfs_datanode2:/home/hadoopquochuy/hadoop/hadoop_data/hdfs/datanode
+    networks:
+      - hadoop-net
+    command: /bin/bash -c "service ssh start; tail -f /dev/null"
+
+  worker3:
+    image: worker
+    container_name: worker3
+    hostname: quochuy-worker3
+    volumes:
+      - hdfs_datanode3:/home/hadoopquochuy/hadoop/hadoop_data/hdfs/datanode
+    networks:
+      - hadoop-net
+    command: /bin/bash -c "service ssh start; tail -f /dev/null"
+
+  worker4:
+    image: worker
+    container_name: worker4
+    hostname: quochuy-worker4
+    volumes:
+      - hdfs_datanode4:/home/hadoopquochuy/hadoop/hadoop_data/hdfs/datanode
+    networks:
+      - hadoop-net
+    command: /bin/bash -c "service ssh start; tail -f /dev/null"
+
+  worker5:
+    image: worker
+    container_name: worker5
+    hostname: quochuy-worker5
+    volumes:
+      - hdfs_datanode5:/home/hadoopquochuy/hadoop/hadoop_data/hdfs/datanode
+    networks:
+      - hadoop-net
+    command: /bin/bash -c "service ssh start; tail -f /dev/null"
+
+
+volumes:
+  hdfs_namenode:
+  hdfs_datanode1:
+  hdfs_datanode2:
+  hdfs_datanode3:
+  hdfs_datanode4:
+  hdfs_datanode5:

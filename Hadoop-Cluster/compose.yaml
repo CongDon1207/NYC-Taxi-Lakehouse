@@ -1,0 +1,24 @@
+networks:
+  hadoop-net:
+    driver: bridge
+
+services:
+  master:
+    image: master-official
+    container_name: master
+    hostname: quochuy-master
+    volumes:
+      - hdfs_namenode:/home/hadoopquochuy/hadoop/hadoop_data/hdfs/namenode
+      - ./scripts:/home/hadoopquochuy/scripts
+      - ./data:/home/hadoopquochuy/data
+
+    ports:
+      - "9004:9004"
+      - "9870:9870"
+
+    networks:
+      - hadoop-net
+    command: /bin/bash -c "service ssh start; tail -f /dev/null"
+    
+volumes:
+  hdfs_namenode:

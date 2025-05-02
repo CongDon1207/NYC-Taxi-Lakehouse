@@ -1,0 +1,22 @@
+services:
+  hadoop-base:
+    build: 
+      context: ./hadoop-base
+      dockerfile: Dockerfile
+    image: hadoop-base
+
+  master:
+    build: 
+      context: ./master
+      dockerfile: Dockerfile
+    image: master
+    depends_on:
+      - hadoop-base
+  
+  worker:
+    build: 
+      context: ./worker
+      dockerfile: Dockerfile
+    image: worker
+    depends_on:
+      - hadoop-base
