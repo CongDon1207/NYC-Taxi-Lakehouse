@@ -26,7 +26,7 @@ fi
 
 
 echo "Restarting the cluster..."
-docker exec -it master /bin/bash -c "su - hadoopquochuy"
+docker exec -it client /bin/bash -c "su - hadoopquochuy"
 if [ $? -ne 0 ]; then
     echo "Failed to restart the cluster. Exiting..."
     exit 1

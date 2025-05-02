@@ -126,3 +126,11 @@ export HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop
 export HADOOP_YARN_HOME=$HADOOP_HOME
 export HADOOP_COMMON_LIB_NATIVE_DIR=$HADOOP_HOME/lib/native
 export HADOOP_OPTS="-Djava.library.path=$HADOOP_HOME/lib/native"
+
+export YARN_CONF_DIR=$HADOOP_CONF_DIR
+
+
+
+export SPARK_HOME=/home/hadoopquochuy/spark
+export PATH="$SPARK_HOME/bin:$SPARK_HOME/sbin:$PATH"
+export SPARK_DIST_CLASSPATH="$(hadoop classpath)"

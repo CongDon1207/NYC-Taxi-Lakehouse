@@ -29,24 +29,41 @@ RUN wget https://dlcdn.apache.org/hadoop/common/hadoop-3.4.1/hadoop-3.4.1.tar.gz
     mv hadoop-3.4.1 hadoop && \
     rm hadoop-3.4.1.tar.gz
 
+
+RUN wget https://dlcdn.apache.org/spark/spark-3.4.4/spark-3.4.4-bin-hadoop3.tgz && \
+    tar -xvzf spark-3.4.4-bin-hadoop3.tgz && \
+    mv spark-3.4.4-bin-hadoop3 spark && \
+    rm spark-3.4.4-bin-hadoop3.tgz
+
+
+RUN sudo apt-get update && sudo apt-get install -y curl zip unzip
+
+COPY .bashrc /home/hadoopquochuy/.bashrc
+
+USER root
+RUN dos2unix /home/hadoopquochuy/.bashrc 
+
+RUN chown hadoopquochuy:hadoopquochuy /home/hadoopquochuy/.bashrc
+
+USER hadoopquochuy
+WORKDIR /home/hadoopquochuy
+
+RUN curl -s "https://get.sdkman.io" | bash && \
+    echo 'source "/home/hadoopquochuy/.sdkman/bin/sdkman-init.sh"' >> /home/hadoopquochuy/.bashrc && \
+    bash -c "source /home/hadoopquochuy/.sdkman/bin/sdkman-init.sh && sdk install scala 2.12.17"
+
+
 # Set JAVA_HOME in hadoop-env.sh
 RUN echo "export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64" >> /home/hadoopquochuy/hadoop/etc/hadoop/hadoop-env.sh
     
 
 # Copy Hadoop configuration files
-COPY .bashrc /home/hadoopquochuy/.bashrc
 
 RUN mkdir -p /home/hadoopquochuy/.ssh && \
     ssh-keygen -t rsa -P '' -f /home/hadoopquochuy/.ssh/id_rsa && \
     cat /home/hadoopquochuy/.ssh/id_rsa.pub >> /home/hadoopquochuy/.ssh/authorized_keys && \
     chmod 600 /home/hadoopquochuy/.ssh/authorized_keys && \
     chown -R hadoopquochuy:hadoopquochuy /home/hadoopquochuy/.ssh
-
-# Add permission to ssh folder and keys
-USER root
-
-# Convert files to Unix format
-RUN dos2unix /home/hadoopquochuy/.bashrc 
 
 # Expose ports
 EXPOSE 9000 50070 9001 9002 9003 9004 9005 9006 9870 9864 8088 8042 8080 7070 4040

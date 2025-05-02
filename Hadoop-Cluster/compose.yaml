@@ -3,6 +3,18 @@ networks:
     driver: bridge
 
 services:
+  client:
+    image: client
+    container_name: client
+    hostname: quochuy-client
+    # volumes:
+    #   - ./scripts:/home/hadoopquochuy/scripts
+    #   - ./data:/home/hadoopquochuy/data
+
+    networks:
+      - hadoop-net
+    command: /bin/bash -c "service ssh start; tail -f /dev/null"
+
   master:
     image: master-official
     container_name: master

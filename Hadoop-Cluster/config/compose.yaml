@@ -5,6 +5,13 @@ services:
       dockerfile: Dockerfile
     image: hadoop-base
 
+  client:
+      build: 
+        context: ./client
+        dockerfile: Dockerfile
+      image: client
+      depends_on:
+        - hadoop-base
   master:
     build: 
       context: ./master
