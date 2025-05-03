@@ -7,9 +7,14 @@ services:
     image: client
     container_name: client
     hostname: quochuy-client
-    # volumes:
-    #   - ./scripts:/home/hadoopquochuy/scripts
-    #   - ./data:/home/hadoopquochuy/data
+    ports:
+      - "4040:4040"
+
+      
+    volumes:
+      - ./data:/home/hadoopquochuy/data
+      - ./scripts:/home/hadoopquochuy/scripts
+
 
     networks:
       - hadoop-net
@@ -22,7 +27,6 @@ services:
     volumes:
       - hdfs_namenode:/home/hadoopquochuy/hadoop/hadoop_data/hdfs/namenode
       - ./scripts:/home/hadoopquochuy/scripts
-      - ./data:/home/hadoopquochuy/data
 
     ports:
       - "9004:9004"

@@ -1,9 +1,9 @@
 services:
-  hadoop-base:
+  base:
     build: 
-      context: ./hadoop-base
+      context: ./base
       dockerfile: Dockerfile
-    image: hadoop-base
+    image: base
 
   client:
       build: 
@@ -11,14 +11,14 @@ services:
         dockerfile: Dockerfile
       image: client
       depends_on:
-        - hadoop-base
+        - base
   master:
     build: 
       context: ./master
       dockerfile: Dockerfile
     image: master
     depends_on:
-      - hadoop-base
+      - base
   
   worker:
     build: 
@@ -26,4 +26,4 @@ services:
       dockerfile: Dockerfile
     image: worker
     depends_on:
-      - hadoop-base
+      - base
