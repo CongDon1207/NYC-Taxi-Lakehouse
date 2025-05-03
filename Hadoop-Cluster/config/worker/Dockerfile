@@ -1,5 +1,5 @@
 # Base Image
-FROM hadoop-base
+FROM base
 
 USER hadoopquochuy
 WORKDIR /home/hadoopquochuy
