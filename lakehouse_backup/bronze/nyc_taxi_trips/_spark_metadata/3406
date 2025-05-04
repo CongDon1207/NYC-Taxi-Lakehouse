@@ -1,3 +1,0 @@
-v1
-{"path":"hdfs://tanhung-master:9000/lakehouse/bronze/nyc_taxi_trips/part-00000-1b4b1565-8c8f-4f5a-8d70-368e4d9ab201-c000.snappy.parquet","size":7335,"isDir":false,"modificationTime":1746350319200,"blockReplication":2,"blockSize":134217728,"action":"add"}
-{"path":"hdfs://tanhung-master:9000/lakehouse/bronze/nyc_taxi_trips/part-00001-2674f7c1-6034-494b-8d66-553234e2062f-c000.snappy.parquet","size":7703,"isDir":false,"modificationTime":1746350319305,"blockReplication":2,"blockSize":134217728,"action":"add"}
