@@ -7,9 +7,10 @@ services:
     image: client
     container_name: client
     hostname: quochuy-client
-    # volumes:
-    #   - ./scripts:/home/hadoopquochuy/scripts
+    volumes:
+     - ./scripts:/home/hadoopquochuy/scripts
     #   - ./data:/home/hadoopquochuy/data
+    #   - hive-metastore:/home/hadoopquochuy/hive/metastore_db
 
     networks:
       - hadoop-net
@@ -52,41 +53,8 @@ services:
       - hadoop-net
     command: /bin/bash -c "service ssh start; tail -f /dev/null"
 
-  worker3:
-    image: worker
-    container_name: worker3
-    hostname: quochuy-worker3
-    volumes:
-      - hdfs_datanode3:/home/hadoopquochuy/hadoop/hadoop_data/hdfs/datanode
-    networks:
-      - hadoop-net
-    command: /bin/bash -c "service ssh start; tail -f /dev/null"
-
-  worker4:
-    image: worker
-    container_name: worker4
-    hostname: quochuy-worker4
-    volumes:
-      - hdfs_datanode4:/home/hadoopquochuy/hadoop/hadoop_data/hdfs/datanode
-    networks:
-      - hadoop-net
-    command: /bin/bash -c "service ssh start; tail -f /dev/null"
-
-  worker5:
-    image: worker
-    container_name: worker5
-    hostname: quochuy-worker5
-    volumes:
-      - hdfs_datanode5:/home/hadoopquochuy/hadoop/hadoop_data/hdfs/datanode
-    networks:
-      - hadoop-net
-    command: /bin/bash -c "service ssh start; tail -f /dev/null"
-
 
 volumes:
   hdfs_namenode:
   hdfs_datanode1:
   hdfs_datanode2:
-  hdfs_datanode3:
-  hdfs_datanode4:
-  hdfs_datanode5:

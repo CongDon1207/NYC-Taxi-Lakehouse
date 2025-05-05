@@ -7,9 +7,10 @@ services:
     image: client
     container_name: client
     hostname: quochuy-client
-    # volumes:
-    #   - ./scripts:/home/hadoopquochuy/scripts
+    volumes:
+     - ./scripts:/home/hadoopquochuy/scripts
     #   - ./data:/home/hadoopquochuy/data
+    #   - hive-metastore:/home/hadoopquochuy/hive/metastore_db
 
     networks:
       - hadoop-net
@@ -34,3 +35,4 @@ services:
     
 volumes:
   hdfs_namenode:
+  hive-metastore:

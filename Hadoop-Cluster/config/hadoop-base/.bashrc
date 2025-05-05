@@ -134,3 +134,6 @@ export YARN_CONF_DIR=$HADOOP_CONF_DIR
 export SPARK_HOME=/home/hadoopquochuy/spark
 export PATH="$SPARK_HOME/bin:$SPARK_HOME/sbin:$PATH"
 export SPARK_DIST_CLASSPATH="$(hadoop classpath)"
+
+export HIVE_HOME=/home/hadoopquochuy/hive
+export PATH=$HIVE_HOME/bin:$PATH
