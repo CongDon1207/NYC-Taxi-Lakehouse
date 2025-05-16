@@ -8,7 +8,7 @@ from kafka_producer.push_fhvhv_data import stream_parquet_to_kafka
 
 default_args = {
     'owner': 'airflow',
-    'start_date': datetime(2025, 5, 1),
+    'start_date': datetime(2019, 4, 1),
     'retries': 1,
     'retry_delay': timedelta(minutes=2),
 }
@@ -25,7 +25,7 @@ with DAG(
         task_id='stream_parquet_to_kafka',
         python_callable=stream_parquet_to_kafka,
         op_kwargs={
-            'parquet_file_path': '/opt/airflow/data/fhvhv_tripdata_2025-01.parquet',
+            'parquet_file_path': '/opt/airflow/data/fhvhv_tripdata_2019-04.parquet',
             'kafka_bootstrap_servers': 'broker:29092',
             'kafka_topic': 'nyc_taxi_stream',
             'sleep_time': 0.1
