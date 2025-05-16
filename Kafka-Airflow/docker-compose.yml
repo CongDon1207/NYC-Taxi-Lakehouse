@@ -1,4 +1,14 @@
 services:
+
+  airflow-common-base:
+    # In order to add custom dependencies or upgrade provider packages you can use your extended image.
+    # Comment the image line, place your Dockerfile in the directory where you placed the docker-compose.yaml
+    # and uncomment the "build" line below, Then run `docker-compose build` to build the images.
+    # image: ${AIRFLOW_IMAGE_NAME:-apache/airflow:2.9.2}
+    # build: .
+    build: .
+    image: airflow-common
+
   postgres:
     image: postgres:13
     environment:
@@ -11,7 +21,7 @@ services:
       - data_network
 
   airflow-webserver:
-    image: apache/airflow:2.9.2
+    image: airflow-common
     environment:
       AIRFLOW__CORE__EXECUTOR: LocalExecutor
       AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
@@ -36,7 +46,7 @@ services:
     command: webserver
 
   airflow-scheduler:
-    image: apache/airflow:2.9.2
+    image: airflow-common
     environment:
       AIRFLOW__CORE__EXECUTOR: LocalExecutor
       AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
