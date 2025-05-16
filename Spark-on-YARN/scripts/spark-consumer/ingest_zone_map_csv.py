@@ -1,6 +1,5 @@
 from pyspark.sql import SparkSession
 
-# Tạo SparkSession
 spark = SparkSession.builder \
     .appName("ZoneMapIngestionDelta") \
     .master("yarn") \
@@ -9,15 +8,13 @@ spark = SparkSession.builder \
     .config("spark.sql.caseSensitive", "true") \
     .getOrCreate()
 
-local_csv_path = "/data/taxi+_zone_lookup.csv"
+local_csv_path = "data/taxi+_zone_lookup.csv"
 
-hdfs_zone_path = "hdfs://quochuy-master:9000/deltalake/bronze/zone_map/"
+hdfs_delta_path = "hdfs://quochuy-master:9000/deltalake/bronze/zone_map/"
 
-# Đọc và ghi file vào HDFS
+
 df_lookup = spark.read.csv(local_csv_path, header=True, inferSchema=True)
 
-df_lookup.write.mode("overwrite") \
-    .option("header", "true") \
-    .csv(hdfs_zone_path)
-
-print("Đã ingest file zone map CSV vào HDFS.")
+df_lookup.write.format("delta") \
+    .mode("overwrite") \
+    .save(hdfs_delta_path)
