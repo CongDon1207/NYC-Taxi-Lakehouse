@@ -1,0 +1,72 @@
+services:
+
+  airflow-common-base:
+    # In order to add custom dependencies or upgrade provider packages you can use your extended image.
+    # Comment the image line, place your Dockerfile in the directory where you placed the docker-compose.yaml
+    # and uncomment the "build" line below, Then run `docker-compose build` to build the images.
+    # image: ${AIRFLOW_IMAGE_NAME:-apache/airflow:2.9.2}
+    # build: .
+    build: .
+    image: airflow-common
+
+  postgres:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: airflow
+      POSTGRES_PASSWORD: airflow
+      POSTGRES_DB: airflow
+    volumes:
+      - postgres-db:/var/lib/postgresql/data
+    networks:
+      - data_network
+
+  airflow-webserver:
+    image: airflow-common
+    environment:
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
+      AIRFLOW__CORE__FERNET_KEY: 'fernet_key'
+      AIRFLOW__WEBSERVER__SECRET_KEY: 'webserver_key'
+      _AIRFLOW_WWW_USER_USERNAME: airflow
+      _AIRFLOW_WWW_USER_PASSWORD: airflow
+      _AIRFLOW_DB_MIGRATE: 'true'
+      _AIRFLOW_WWW_USER_CREATE: 'true'
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./logs:/opt/airflow/logs
+      - ./plugins:/opt/airflow/plugins
+      - ./scripts:/opt/airflow/scripts
+      - ./data:/opt/airflow/data
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    networks:
+      - data_network
+    command: webserver
+
+  airflow-scheduler:
+    image: airflow-common
+    environment:
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./logs:/opt/airflow/logs
+      - ./plugins:/opt/airflow/plugins
+      - ./scripts:/opt/airflow/scripts
+      - ./data:/opt/airflow/data
+    depends_on:
+      - airflow-webserver
+    networks:
+      - data_network
+    command: scheduler
+
+volumes:
+  postgres-db:
+
+networks:
+  data_network:
+    driver: bridge
+    name: data_network
+    external: true

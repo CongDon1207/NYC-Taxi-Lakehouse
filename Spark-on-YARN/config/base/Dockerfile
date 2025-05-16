@@ -30,10 +30,15 @@ RUN wget https://dlcdn.apache.org/hadoop/common/hadoop-3.4.1/hadoop-3.4.1.tar.gz
     rm hadoop-3.4.1.tar.gz
 
 
-RUN wget https://dlcdn.apache.org/spark/spark-3.4.4/spark-3.4.4-bin-hadoop3.tgz && \
-    tar -xvzf spark-3.4.4-bin-hadoop3.tgz && \
-    mv spark-3.4.4-bin-hadoop3 spark && \
-    rm spark-3.4.4-bin-hadoop3.tgz
+# RUN wget https://dlcdn.apache.org/spark/spark-3.4.4/spark-3.4.4-bin-hadoop3.tgz && \
+RUN wget https://archive.apache.org/dist/spark/spark-3.4.4/spark-3.4.4-bin-hadoop3-scala2.13.tgz && \
+    tar -xvzf spark-3.4.4-bin-hadoop3-scala2.13.tgz && \
+    mv spark-3.4.4-bin-hadoop3-scala2.13 spark && \
+    rm spark-3.4.4-bin-hadoop3-scala2.13.tgz
+
+    # tar -xvzf spark-3.4.4-bin-hadoop3.tgz && \
+    # mv spark-3.4.4-bin-hadoop3 spark && \
+    # rm spark-3.4.4-bin-hadoop3.tgz
 
 
 RUN sudo apt-get update && sudo apt-get install -y curl zip unzip
@@ -50,7 +55,7 @@ WORKDIR /home/hadoopquochuy
 
 RUN curl -s "https://get.sdkman.io" | bash && \
     echo 'source "/home/hadoopquochuy/.sdkman/bin/sdkman-init.sh"' >> /home/hadoopquochuy/.bashrc && \
-    bash -c "source /home/hadoopquochuy/.sdkman/bin/sdkman-init.sh && sdk install scala 2.12.17"
+    bash -c "source /home/hadoopquochuy/.sdkman/bin/sdkman-init.sh && sdk install scala 2.13.0"
 
 
 # Set JAVA_HOME in hadoop-env.sh
