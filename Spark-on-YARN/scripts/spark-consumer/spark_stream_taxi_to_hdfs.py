@@ -36,8 +36,7 @@ trip_schema = StructType([
     StructField("shared_match_flag", StringType(), True),
     StructField("access_a_ride_flag", StringType(), True),
     StructField("wav_request_flag", StringType(), True),
-    StructField("wav_match_flag", StringType(), True),
-    StructField("cbd_congestion_fee", DoubleType(), True)
+    StructField("wav_match_flag", StringType(), True)
 ])
 
 df_raw = spark.readStream \
