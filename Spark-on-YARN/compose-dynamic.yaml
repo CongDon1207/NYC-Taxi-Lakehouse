@@ -1,56 +1,66 @@
+#networks:
+  # hadoop_net:
+  #   driver: bridge
+
+
 networks:
-  hadoop-net:
+  data_network:
     driver: bridge
+    name: data_network
+    external: true 
 
 services:
   client:
     image: client
     container_name: client
     hostname: quochuy-client
+    ports:
+      - "4040:4040"
+
+      
     volumes:
-     - ./scripts:/home/hadoopquochuy/scripts
-    #   - ./data:/home/hadoopquochuy/data
-    #   - hive-metastore:/home/hadoopquochuy/hive/metastore_db
+      - ./data:/home/hadoopquochuy/data
+      - ./scripts:/home/hadoopquochuy/scripts
+
 
     networks:
-      - hadoop-net
+      - data_network
     command: /bin/bash -c "service ssh start; tail -f /dev/null"
 
   master:
     image: master-official
-    container_name: master
+    container_name: master-huy
     hostname: quochuy-master
     volumes:
       - hdfs_namenode:/home/hadoopquochuy/hadoop/hadoop_data/hdfs/namenode
       - ./scripts:/home/hadoopquochuy/scripts
-      - ./data:/home/hadoopquochuy/data
 
     ports:
       - "9004:9004"
       - "9870:9870"
 
     networks:
-      - hadoop-net
+      - data_network
     command: /bin/bash -c "service ssh start; tail -f /dev/null"
     
   worker1:
     image: worker
-    container_name: worker1
+    container_name: worker-huy1
     hostname: quochuy-worker1
     volumes:
       - hdfs_datanode1:/home/hadoopquochuy/hadoop/hadoop_data/hdfs/datanode
     networks:
-      - hadoop-net
+      - data_network
     command: /bin/bash -c "service ssh start; tail -f /dev/null"
 
   worker2:
     image: worker
-    container_name: worker2
+    container_name: worker-huy2
     hostname: quochuy-worker2
     volumes:
       - hdfs_datanode2:/home/hadoopquochuy/hadoop/hadoop_data/hdfs/datanode
     networks:
-      - hadoop-net
+      - data_network
     command: /bin/bash -c "service ssh start; tail -f /dev/null"
 
 

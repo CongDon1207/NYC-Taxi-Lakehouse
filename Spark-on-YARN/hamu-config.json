@@ -1,14 +1,13 @@
 {
     "requiredFiles": [
-        "compose-dynamic.yaml",
-        "compose.yaml",
-        "hamu-config.json",
+        "config/base/.bashrc",
+        "config/base/Dockerfile",
 
-        "config/compose.yaml",
-        "config/Dockerfile",
-
-        "config/hadoop-base/.bashrc",
-        "config/hadoop-base/Dockerfile",
+        "config/client/config/core-site.xml",
+        "config/client/config/hdfs-site.xml",
+        "config/client/config/spark-defaults.conf",
+        "config/client/config/yarn-site.xml",
+        "config/client/Dockerfile",
 
         "config/master/config/core-site.xml",
         "config/master/config/hdfs-site.xml",
@@ -22,8 +21,14 @@
         "config/worker/config/yarn-site.xml",
         "config/worker/Dockerfile",
 
+        "config/Dockerfile",
+
         "scripts/resize-number-worker.sh",
-        "scripts/run-container.sh"
+        "scripts/run-container.sh",
+
+        "compose-dynamic.yaml",
+        "compose.yaml",
+        "hamu-config.json"
         
     ],
     "ownerName": "quochuy"

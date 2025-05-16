@@ -39,12 +39,12 @@ for ((i=1; i<=n; i++)); do
     cat <<EOL >> compose-dynamic.yaml
   worker$i:
     image: worker
-    container_name: worker$i
+    container_name: worker-huy$i
     hostname: quochuy-worker$i
     volumes:
       - hdfs_datanode$i:/home/hadoopquochuy/hadoop/hadoop_data/hdfs/datanode
     networks:
-      - hadoop-net
+      - data_network
     command: /bin/bash -c "service ssh start; tail -f /dev/null"
 
 EOL
