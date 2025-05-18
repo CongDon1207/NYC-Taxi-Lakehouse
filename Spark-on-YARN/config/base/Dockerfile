@@ -6,8 +6,10 @@ RUN echo "root:root" | chpasswd
 
 # Update and install required packages
 RUN apt-get update && apt-get upgrade -y && \
-    apt-get install -y openjdk-11-jdk wget ssh openssh-server dos2unix vim sudo telnet iputils-ping && \
+    apt-get install -y openjdk-11-jdk wget ssh openssh-server dos2unix vim sudo telnet iputils-ping \
+    net-tools && \
     apt-get clean
+
 
 # Set environment variables
 ENV JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
@@ -39,6 +41,25 @@ RUN wget https://archive.apache.org/dist/spark/spark-3.4.4/spark-3.4.4-bin-hadoo
     # tar -xvzf spark-3.4.4-bin-hadoop3.tgz && \
     # mv spark-3.4.4-bin-hadoop3 spark && \
     # rm spark-3.4.4-bin-hadoop3.tgz
+
+
+    # tar -xvzf spark-3.4.4-bin-hadoop3.tgz && \
+    # mv spark-3.4.4-bin-hadoop3 spark && \
+    # rm spark-3.4.4-bin-hadoop3.tgz
+
+# RUN wget -q https://archive.apache.org/dist/spark/spark-3.4.4/spark-3.4.4-bin-hadoop3.tgz && \
+#     tar -xzf spark-3.4.4-bin-hadoop3.tgz && \
+#     mv spark-3.4.4-bin-hadoop3 spark && \
+#     rm spark-3.4.4-bin-hadoop3.tgz
+# Cài Hive + ENV
+ARG HIVE_VERSION=2.3.9
+RUN wget -q https://archive.apache.org/dist/hive/hive-${HIVE_VERSION}/apache-hive-${HIVE_VERSION}-bin.tar.gz && \
+    tar -xzf apache-hive-${HIVE_VERSION}-bin.tar.gz && \
+    mv apache-hive-${HIVE_VERSION}-bin /home/hadoopquochuy/hive && \
+    rm apache-hive-${HIVE_VERSION}-bin.tar.gz
+
+ENV HIVE_HOME=/home/hadoopquochuy/hive
+ENV PATH=$HIVE_HOME/bin:$PATH
 
 
 RUN sudo apt-get update && sudo apt-get install -y curl zip unzip

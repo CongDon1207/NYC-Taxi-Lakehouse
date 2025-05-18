@@ -54,6 +54,8 @@ done
 cat <<EOL >> compose-dynamic.yaml
 
 volumes:
+  mysql-data:
+  hive-metastore:
   hdfs_namenode:
 EOL
 

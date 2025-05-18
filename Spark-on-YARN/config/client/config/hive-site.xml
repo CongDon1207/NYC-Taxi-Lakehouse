@@ -1,23 +1,29 @@
+<!-- Hive-site.xml for Client (Hive CLI & Spark) -->
 <configuration>
-  <!-- Derby embedded Metastore -->
+
+  <!-- Chỉ cần khai báo Metastore URI để kết nối -->
   <property>
-    <name>javax.jdo.option.ConnectionURL</name>
-    <value>jdbc:derby:/home/hadoopquochuy/hive/metastore_db;create=true</value>
+    <name>hive.metastore.uris</name>
+    <value>thrift://quochuy-master:9083</value>
   </property>
 
-  <property>
-    <name>javax.jdo.option.ConnectionDriverName</name>
-    <value>org.apache.derby.jdbc.EmbeddedDriver</value>
-  </property>
-
-  <property>
-    <name>datanucleus.schema.autoCreateAll</name>
-    <value>true</value>
-  </property>
-
-  <!-- Warehouse dir trên HDFS -->
+  <!-- Thư mục Hive Warehouse giống Master -->
   <property>
     <name>hive.metastore.warehouse.dir</name>
     <value>/user/hive/warehouse</value>
   </property>
+
+  <!-- Các cấu hình client-side tùy chọn -->
+  <!-- Ví dụ: hiển thị header khi in kết quả -->
+  <property>
+    <name>hive.cli.print.header</name>
+    <value>true</value>
+  </property>
+
+  <!-- Spark sẽ đọc file này để kết nối Metastore -->
+  <property>
+    <name>spark.hadoop.hive.metastore.uris</name>
+    <value>thrift://quochuy-master:9083</value>
+  </property>
+
 </configuration>

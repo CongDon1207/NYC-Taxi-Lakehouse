@@ -10,15 +10,7 @@ COPY config/hdfs-site.xml /home/hadoopquochuy/hadoop/etc/hadoop/hdfs-site.xml
 COPY config/yarn-site.xml /home/hadoopquochuy/hadoop/etc/hadoop/yarn-site.xml
 COPY config/spark-defaults.conf /home/hadoopquochuy/spark/conf/spark-defaults.conf
 
-# Cài Hive + ENV
-ARG HIVE_VERSION=2.3.9
-RUN wget -q https://archive.apache.org/dist/hive/hive-${HIVE_VERSION}/apache-hive-${HIVE_VERSION}-bin.tar.gz && \
-    tar -xzf apache-hive-${HIVE_VERSION}-bin.tar.gz && \
-    mv apache-hive-${HIVE_VERSION}-bin /home/hadoopquochuy/hive && \
-    rm apache-hive-${HIVE_VERSION}-bin.tar.gz
 
-ENV HIVE_HOME=/home/hadoopquochuy/hive
-ENV PATH=$HIVE_HOME/bin:$PATH
 
 # Copy hive-site.xml
 COPY config/hive-site.xml /home/hadoopquochuy/hive/conf/hive-site.xml
