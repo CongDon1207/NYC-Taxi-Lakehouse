@@ -2,3 +2,10 @@ node_modules/
 package-lock.json
 package.json
 data/
+
+# Log files
+*.log
+logs/
+scripts/derby.log
+scripts/metastore.log
+scripts/metastore_db/

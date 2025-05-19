@@ -10,18 +10,28 @@ networks:
     external: true 
 
 services:
+  mysql:
+    image: mysql:5.7
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: metastore_db
+      MYSQL_USER: hiveuser
+      MYSQL_PASSWORD: hivepw
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - data_network
+
+
   client:
     image: client
     container_name: client
     hostname: quochuy-client
-    ports:
-      - "4040:4040"
-
-      
     volumes:
-      - ./data:/home/hadoopquochuy/data
-      - ./scripts:/home/hadoopquochuy/scripts
-
+     - ./scripts:/home/hadoopquochuy/scripts
+    #   - ./data:/home/hadoopquochuy/data
+    #   - hive-metastore:/home/hadoopquochuy/hive/metastore_db
 
     networks:
       - data_network
@@ -42,6 +52,9 @@ services:
     networks:
       - data_network
     command: /bin/bash -c "service ssh start; tail -f /dev/null"
+# NEW_WORKERS_MARKER
+# dynamic workers will be inserted here
+  
     
   worker1:
     image: worker
@@ -65,6 +78,8 @@ services:
 
 
 volumes:
+  mysql-data:
+  hive-metastore:
   hdfs_namenode:
   hdfs_datanode1:
   hdfs_datanode2:

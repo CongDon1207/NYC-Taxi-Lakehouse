@@ -1,0 +1,13 @@
+----------------------------------------------------------------
+Sat May 17 01:35:20 GMT 2025:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.10.2.0 - (1582446): instance a816c00e-0196-dbe1-a655-000003a17060 
+on database directory /home/hadoopquochuy/scripts/metastore_db with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@5ffd2b27 
+Loaded from file:/home/hadoopquochuy/hive/lib/derby-10.10.2.0.jar
+java.vendor=Ubuntu
+java.runtime.version=11.0.27+6-post-Ubuntu-0ubuntu122.04
+user.dir=/home/hadoopquochuy/scripts
+os.name=Linux
+os.arch=amd64
+os.version=5.15.167.4-microsoft-standard-WSL2
+derby.system.home=null
+Database Class Loader started - derby.database.classpath=''
