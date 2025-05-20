@@ -30,8 +30,7 @@ services:
     hostname: quochuy-client
     volumes:
      - ./scripts:/home/hadoopquochuy/scripts
-    #   - ./data:/home/hadoopquochuy/data
-    #   - hive-metastore:/home/hadoopquochuy/hive/metastore_db
+     - ./data:/home/hadoopquochuy/data
 
     networks:
       - data_network
@@ -44,6 +43,7 @@ services:
     volumes:
       - hdfs_namenode:/home/hadoopquochuy/hadoop/hadoop_data/hdfs/namenode
       - ./scripts:/home/hadoopquochuy/scripts
+      - ./data:/home/hadoopquochuy/data
 
     ports:
       - "9004:9004"
