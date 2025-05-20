@@ -30,7 +30,7 @@ services:
     hostname: quochuy-client
     volumes:
      - ./scripts:/home/hadoopquochuy/scripts
-    #   - ./data:/home/hadoopquochuy/data
+     - ./data:/home/hadoopquochuy/data
     #   - hive-metastore:/home/hadoopquochuy/hive/metastore_db
 
     networks:
