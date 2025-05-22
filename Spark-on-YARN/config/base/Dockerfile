@@ -16,6 +16,8 @@ ENV JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
 ENV HADOOP_HOME=/home/hadoopquochuy/hadoop
 ENV PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin:$JAVA_HOME/bin
 
+
+
 # Create user hadoopquochuy
 RUN adduser --disabled-password --gecos "" hadoopquochuy && \
     echo "hadoopquochuy:hadoopquochuy" | chpasswd && \
@@ -48,7 +50,7 @@ COPY yarn-site.xml /home/hadoopquochuy/hadoop/etc/hadoop/yarn-site.xml
 
 RUN dos2unix /home/hadoopquochuy/hadoop/etc/hadoop/core-site.xml && \
     dos2unix /home/hadoopquochuy/hadoop/etc/hadoop/hdfs-site.xml && \
-    dos2unix /home/hadoopquochuy/hadoop/etc/hadoop/yarn-site.xml && 
+    dos2unix /home/hadoopquochuy/hadoop/etc/hadoop/yarn-site.xml
 
 
 # # Set JAVA_HOME in hadoop-env.sh

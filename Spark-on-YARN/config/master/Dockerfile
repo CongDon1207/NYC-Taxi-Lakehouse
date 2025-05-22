@@ -3,6 +3,9 @@ FROM base
 
 USER hadoopquochuy
 WORKDIR /home/hadoopquochuy
+# Set environment variables
+RUN echo "export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64" >> /home/hadoopquochuy/hadoop/etc/hadoop/hadoop-env.sh
+
 
 COPY config/mapred-site.xml /home/hadoopquochuy/hadoop/etc/hadoop/mapred-site.xml
 

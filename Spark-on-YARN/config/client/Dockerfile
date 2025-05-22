@@ -30,5 +30,9 @@ RUN curl -s "https://get.sdkman.io" | bash && \
 RUN echo 'export PATH=$PATH:/home/hadoopquochuy/spark/bin' >> /home/hadoopquochuy/.bashrc && \
     echo 'export SPARK_HOME=/home/hadoopquochuy/spark' >> /home/hadoopquochuy/.bashrc && \
     echo 'export PATH=$PATH:$SPARK_HOME/bin' >> /home/hadoopquochuy/.bashrc
+
+RUN echo "export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64" >> /home/hadoopquochuy/hadoop/etc/hadoop/hadoop-env.sh
+
+
 USER root
 CMD ["/bin/bash", "-c", "service ssh start && su - hadoopquochuy && bash"]
