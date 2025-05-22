@@ -45,6 +45,8 @@ for ((i=1; i<=n; i++)); do
       - hdfs_datanode$i:/home/hadoopquochuy/hadoop/hadoop_data/hdfs/datanode
     networks:
       - data_network
+    ports:
+      - 988$i:9870
     command: /bin/bash -c "service ssh start; tail -f /dev/null"
 
 EOL
@@ -54,8 +56,6 @@ done
 cat <<EOL >> compose-dynamic.yaml
 
 volumes:
-  mysql-data:
-  hive-metastore:
   hdfs_namenode:
 EOL
 
