@@ -4,27 +4,18 @@ FROM base
 USER hadoopquochuy
 WORKDIR /home/hadoopquochuy
 
-
-# Copy Hadoop configuration files
-COPY config/core-site.xml /home/hadoopquochuy/hadoop/etc/hadoop/core-site.xml
-COPY config/hdfs-site.xml /home/hadoopquochuy/hadoop/etc/hadoop/hdfs-site.xml
-COPY config/yarn-site.xml /home/hadoopquochuy/hadoop/etc/hadoop/yarn-site.xml
+# Spark config
+RUN wget https://archive.apache.org/dist/spark/spark-3.4.4/spark-3.4.4-bin-hadoop3-scala2.13.tgz && \
+    tar -xvzf spark-3.4.4-bin-hadoop3-scala2.13.tgz && \
+    mv spark-3.4.4-bin-hadoop3-scala2.13 spark && \
+    rm spark-3.4.4-bin-hadoop3-scala2.13.tgz
 
 RUN mkdir -p /home/hadoopquochuy/hadoop/hadoop_data/hdfs/datanode && \
     chown -R hadoopquochuy:hadoopquochuy /home/hadoopquochuy/hadoop/hadoop_data/hdfs/datanode
 
-USER root
-# Convert files to Unix format
-RUN dos2unix /home/hadoopquochuy/hadoop/etc/hadoop/core-site.xml && \
-    dos2unix /home/hadoopquochuy/hadoop/etc/hadoop/hdfs-site.xml && \
-    dos2unix /home/hadoopquochuy/hadoop/etc/hadoop/yarn-site.xml
-
-
-# Format HDFS
-USER hadoopquochuy
-RUN hdfs namenode -format
-
-
+RUN echo 'export PATH=$PATH:/home/hadoopquochuy/spark/bin' >> /home/hadoopquochuy/.bashrc && \
+    echo 'export SPARK_HOME=/home/hadoopquochuy/spark' >> /home/hadoopquochuy/.bashrc && \
+    echo 'export PATH=$PATH:$SPARK_HOME/bin' >> /home/hadoopquochuy/.bashrc
 USER root
 # Start SSH and Hadoop services at runtime
 CMD ["/bin/bash", "-c", "service ssh start && su - hadoopquochuy && bash"]

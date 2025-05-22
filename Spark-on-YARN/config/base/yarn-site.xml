@@ -72,12 +72,12 @@ limitations under the License. See accompanying LICENSE file.
 	</property>
 	<property>
 		<name>yarn.scheduler.maximum-allocation-mb</name>
-		<value>2048</value>
+		<value>4096</value>
 	</property>
 
 	<property>
 		<name>yarn.nodemanager.resource.memory-mb</name>
-		<value>2048</value>
+		<value>4096</value>
 	</property>
 
 </configuration>
