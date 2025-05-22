@@ -16,6 +16,8 @@ ENV JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
 ENV HADOOP_HOME=/home/hadoopquochuy/hadoop
 ENV PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin:$JAVA_HOME/bin
 
+
+
 # Create user hadoopquochuy
 RUN adduser --disabled-password --gecos "" hadoopquochuy && \
     echo "hadoopquochuy:hadoopquochuy" | chpasswd && \
@@ -32,36 +34,6 @@ RUN wget https://dlcdn.apache.org/hadoop/common/hadoop-3.4.1/hadoop-3.4.1.tar.gz
     rm hadoop-3.4.1.tar.gz
 
 
-# RUN wget https://dlcdn.apache.org/spark/spark-3.4.4/spark-3.4.4-bin-hadoop3.tgz && \
-RUN wget https://archive.apache.org/dist/spark/spark-3.4.4/spark-3.4.4-bin-hadoop3-scala2.13.tgz && \
-    tar -xvzf spark-3.4.4-bin-hadoop3-scala2.13.tgz && \
-    mv spark-3.4.4-bin-hadoop3-scala2.13 spark && \
-    rm spark-3.4.4-bin-hadoop3-scala2.13.tgz
-
-    # tar -xvzf spark-3.4.4-bin-hadoop3.tgz && \
-    # mv spark-3.4.4-bin-hadoop3 spark && \
-    # rm spark-3.4.4-bin-hadoop3.tgz
-
-
-    # tar -xvzf spark-3.4.4-bin-hadoop3.tgz && \
-    # mv spark-3.4.4-bin-hadoop3 spark && \
-    # rm spark-3.4.4-bin-hadoop3.tgz
-
-# RUN wget -q https://archive.apache.org/dist/spark/spark-3.4.4/spark-3.4.4-bin-hadoop3.tgz && \
-#     tar -xzf spark-3.4.4-bin-hadoop3.tgz && \
-#     mv spark-3.4.4-bin-hadoop3 spark && \
-#     rm spark-3.4.4-bin-hadoop3.tgz
-# Cài Hive + ENV
-ARG HIVE_VERSION=2.3.9
-RUN wget -q https://archive.apache.org/dist/hive/hive-${HIVE_VERSION}/apache-hive-${HIVE_VERSION}-bin.tar.gz && \
-    tar -xzf apache-hive-${HIVE_VERSION}-bin.tar.gz && \
-    mv apache-hive-${HIVE_VERSION}-bin /home/hadoopquochuy/hive && \
-    rm apache-hive-${HIVE_VERSION}-bin.tar.gz
-
-ENV HIVE_HOME=/home/hadoopquochuy/hive
-ENV PATH=$HIVE_HOME/bin:$PATH
-
-
 RUN sudo apt-get update && sudo apt-get install -y curl zip unzip
 
 COPY .bashrc /home/hadoopquochuy/.bashrc
@@ -71,16 +43,18 @@ RUN dos2unix /home/hadoopquochuy/.bashrc
 
 RUN chown hadoopquochuy:hadoopquochuy /home/hadoopquochuy/.bashrc
 
-USER hadoopquochuy
-WORKDIR /home/hadoopquochuy
-
-RUN curl -s "https://get.sdkman.io" | bash && \
-    echo 'source "/home/hadoopquochuy/.sdkman/bin/sdkman-init.sh"' >> /home/hadoopquochuy/.bashrc && \
-    bash -c "source /home/hadoopquochuy/.sdkman/bin/sdkman-init.sh && sdk install scala 2.13.0"
+COPY core-site.xml /home/hadoopquochuy/hadoop/etc/hadoop/core-site.xml
+COPY hdfs-site.xml /home/hadoopquochuy/hadoop/etc/hadoop/hdfs-site.xml
+COPY yarn-site.xml /home/hadoopquochuy/hadoop/etc/hadoop/yarn-site.xml
 
 
-# Set JAVA_HOME in hadoop-env.sh
-RUN echo "export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64" >> /home/hadoopquochuy/hadoop/etc/hadoop/hadoop-env.sh
+RUN dos2unix /home/hadoopquochuy/hadoop/etc/hadoop/core-site.xml && \
+    dos2unix /home/hadoopquochuy/hadoop/etc/hadoop/hdfs-site.xml && \
+    dos2unix /home/hadoopquochuy/hadoop/etc/hadoop/yarn-site.xml
+
+
+# # Set JAVA_HOME in hadoop-env.sh
+# RUN echo "export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64" >> /home/hadoopquochuy/hadoop/etc/hadoop/hadoop-env.sh
     
 
 # Copy Hadoop configuration files

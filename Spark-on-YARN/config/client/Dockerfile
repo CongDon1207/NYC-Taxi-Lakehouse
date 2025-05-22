@@ -4,28 +4,35 @@ FROM base
 USER hadoopquochuy
 WORKDIR /home/hadoopquochuy
 
-# Copy Hadoop & Spark config
-COPY config/core-site.xml /home/hadoopquochuy/hadoop/etc/hadoop/core-site.xml
-COPY config/hdfs-site.xml /home/hadoopquochuy/hadoop/etc/hadoop/hdfs-site.xml
-COPY config/yarn-site.xml /home/hadoopquochuy/hadoop/etc/hadoop/yarn-site.xml
+# Spark config
+RUN wget https://archive.apache.org/dist/spark/spark-3.4.4/spark-3.4.4-bin-hadoop3-scala2.13.tgz && \
+    tar -xvzf spark-3.4.4-bin-hadoop3-scala2.13.tgz && \
+    mv spark-3.4.4-bin-hadoop3-scala2.13 spark && \
+    rm spark-3.4.4-bin-hadoop3-scala2.13.tgz
+
+
 COPY config/spark-defaults.conf /home/hadoopquochuy/spark/conf/spark-defaults.conf
 
 
-
-# Copy hive-site.xml
-COPY config/hive-site.xml /home/hadoopquochuy/hive/conf/hive-site.xml
-
 # Chuyển file sang Unix
 USER root
-RUN dos2unix /home/hadoopquochuy/hadoop/etc/hadoop/core-site.xml && \
-    dos2unix /home/hadoopquochuy/hadoop/etc/hadoop/hdfs-site.xml && \
-    dos2unix /home/hadoopquochuy/hadoop/etc/hadoop/yarn-site.xml && \
-    dos2unix /home/hadoopquochuy/spark/conf/spark-defaults.conf && \
-    dos2unix /home/hadoopquochuy/hive/conf/hive-site.xml
+RUN dos2unix /home/hadoopquochuy/spark/conf/spark-defaults.conf 
 
-# ✅ FORMAT HDFS TRONG QUÁ TRÌNH BUILD (theo yêu cầu)
+
 USER hadoopquochuy
-RUN hdfs namenode -format
+WORKDIR /home/hadoopquochuy
+
+RUN curl -s "https://get.sdkman.io" | bash && \
+    echo 'source "/home/hadoopquochuy/.sdkman/bin/sdkman-init.sh"' >> /home/hadoopquochuy/.bashrc && \
+    bash -c "source /home/hadoopquochuy/.sdkman/bin/sdkman-init.sh && sdk install scala 2.13.0"
+
+
+RUN echo 'export PATH=$PATH:/home/hadoopquochuy/spark/bin' >> /home/hadoopquochuy/.bashrc && \
+    echo 'export SPARK_HOME=/home/hadoopquochuy/spark' >> /home/hadoopquochuy/.bashrc && \
+    echo 'export PATH=$PATH:$SPARK_HOME/bin' >> /home/hadoopquochuy/.bashrc
+
+RUN echo "export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64" >> /home/hadoopquochuy/hadoop/etc/hadoop/hadoop-env.sh
+
 
 USER root
 CMD ["/bin/bash", "-c", "service ssh start && su - hadoopquochuy && bash"]

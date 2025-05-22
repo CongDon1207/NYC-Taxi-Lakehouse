@@ -1,0 +1,43 @@
+
+networks:
+  data_network:
+    driver: bridge
+    name: data_network
+    external: true 
+
+services:
+  mysql:
+    image: mysql:8.4.5
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: metastore
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - data_network
+
+
+  hive-service:
+    build: ./
+    image: hive-service
+    container_name: hive-service
+    hostname: hive-service
+    ports:
+      - "9083:9083"
+    depends_on:
+      - mysql
+    environment:
+      HIVE_METASTORE_DB_TYPE: mysql
+      HIVE_METASTORE_DB_HOST: mysql
+      HIVE_METASTORE_DB_PORT: 3306
+      HIVE_METASTORE_DB_NAME: metastore
+      HIVE_METASTORE_DB_USER: root
+      HIVE_METASTORE_DB_PASSWORD: root
+    networks:
+      - data_network
+
+volumes:
+  mysql-data:

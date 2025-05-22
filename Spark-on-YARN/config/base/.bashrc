@@ -129,9 +129,9 @@ export HADOOP_OPTS="-Djava.library.path=$HADOOP_HOME/lib/native"
 
 
 
-export SPARK_HOME=/home/hadoopquochuy/spark
-export PATH="$SPARK_HOME/bin:$SPARK_HOME/sbin:$PATH"
-export SPARK_DIST_CLASSPATH="$(hadoop classpath)"
+# export SPARK_HOME=/home/hadoopquochuy/spark
+# export PATH="$SPARK_HOME/bin:$SPARK_HOME/sbin:$PATH"
+# export SPARK_DIST_CLASSPATH="$(hadoop classpath)"
 
-export HIVE_HOME=/home/hadoopquochuy/hive
-export PATH=$HIVE_HOME/bin:$PATH
+# export HIVE_HOME=/home/hadoopquochuy/hive
+# export PATH=$HIVE_HOME/bin:$PATH
