@@ -20,9 +20,11 @@ services:
       - data_network
 
 
-  hive-services:
-    build: .
-    container_name: hive-services
+  hive-service:
+    build: ./
+    image: hive-service
+    container_name: hive-service
+    hostname: hive-service
     ports:
       - "9083:9083"
     depends_on:

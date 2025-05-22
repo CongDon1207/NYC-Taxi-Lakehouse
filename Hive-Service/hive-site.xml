@@ -2,13 +2,11 @@
   <property>
     <name>javax.jdo.option.ConnectionURL</name>
     <value>jdbc:mysql://mysql:3306/metastore?createDatabaseIfNotExist=true</value>
-    <description>JDBC connect string for a JDBC metastore</description>
   </property>
 
   <property>
     <name>javax.jdo.option.ConnectionDriverName</name>
-    <value>com.mysql.jdbc.Driver</value>
-    <description>Driver class name for a JDBC metastore</description>
+    <value>com.mysql.cj.jdbc.Driver</value>
   </property>
 
   <property>
@@ -19,20 +17,5 @@
   <property>
     <name>javax.jdo.option.ConnectionPassword</name>
     <value>root</value>
-  </property>
-
-  <property>
-    <name>datanucleus.autoCreateSchema</name>
-    <value>true</value>
-  </property>
-
-  <property>
-    <name>datanucleus.fixedDatastore</name>
-    <value>false</value>
-  </property>
-
-  <property>
-    <name>datanucleus.schema.autoCreateTables</name>
-    <value>true</value>
   </property>
 </configuration>
