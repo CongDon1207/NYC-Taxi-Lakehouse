@@ -9,20 +9,8 @@ networks:
     name: data_network
     external: true 
 
-services:
-  mysql:
-    image: mysql:5.7
-    container_name: mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: metastore_db
-      MYSQL_USER: hiveuser
-      MYSQL_PASSWORD: hivepw
-    volumes:
-      - mysql-data:/var/lib/mysql
-    networks:
-      - data_network
 
+services:
 
   client:
     image: client
@@ -52,11 +40,9 @@ services:
     networks:
       - data_network
     command: /bin/bash -c "service ssh start; tail -f /dev/null"
-# NEW_WORKERS_MARKER
-# dynamic workers will be inserted here
+
   
     
 volumes:
-  mysql-data:
   hdfs_namenode:
   hive-metastore:
