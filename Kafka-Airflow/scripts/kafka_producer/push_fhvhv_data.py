@@ -1,9 +1,10 @@
 import pyarrow.parquet as pq
 import json
 import time
+import random
 from kafka import KafkaProducer
 
-def stream_parquet_to_kafka(parquet_file_path, kafka_bootstrap_servers, kafka_topic, sleep_time=0.1):
+def stream_parquet_to_kafka(parquet_file_path, kafka_bootstrap_servers, kafka_topic, sleep_time=1):
     print(f"Đọc dữ liệu từ: {parquet_file_path}")
     parquet_file = pq.ParquetFile(parquet_file_path)
 
@@ -17,15 +18,22 @@ def stream_parquet_to_kafka(parquet_file_path, kafka_bootstrap_servers, kafka_to
     print(f"Bắt đầu gửi tới topic: {kafka_topic} ({total_rows} dòng)...")
 
     row_count = 0
-    for batch in parquet_file.iter_batches(batch_size=1000):
-        records = batch.to_pydict()
-        for i in range(len(records["hvfhs_license_num"])):  # bất kỳ cột nào cũng được để index
-            row = {col: records[col][i] for col in records}
-            producer.send(kafka_topic, value=row)
-            row_count += 1
-            if row_count % 1000 == 0:
-                print(f"→ Đã gửi {row_count}/{total_rows} dòng")
-            time.sleep(sleep_time)
+    # Đọc toàn bộ dữ liệu 1 lần để tiện xử lý batch random (nếu file không quá lớn)
+    table = parquet_file.read()
+    df = table.to_pandas()
+    total_rows = len(df)
 
-    producer.flush()
+    while row_count < total_rows:
+        batch_size = random.randint(300, 1000)
+        batch_end = min(row_count + batch_size, total_rows)
+        batch_df = df.iloc[row_count:batch_end]
+
+        for _, row in batch_df.iterrows():
+            producer.send(kafka_topic, value=row.to_dict())
+        producer.flush()
+
+        row_count = batch_end
+        print(f"→ Đã gửi {row_count}/{total_rows} dòng (batch size={batch_size})")
+        time.sleep(sleep_time)
+
     print("Gửi xong toàn bộ dữ liệu.")
