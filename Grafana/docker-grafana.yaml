@@ -1,0 +1,23 @@
+
+services:
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    container_name: grafana
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./trino-plugin:/var/lib/grafana/plugins/trino
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS=trino
+    networks:
+      - data_network
+
+volumes:
+  grafana_data:
+
+networks:
+  data_network:
+    external: true
