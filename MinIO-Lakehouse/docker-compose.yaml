@@ -1,18 +1,44 @@
 services:
-  minio-lakehouse:
-    image: minio/minio
-    container_name: miniolakehouse
-    hostname: minio
+  minio1:
+    image: minio/minio:latest
+    container_name: minio1
     ports:
-      - "9000:9000"
-      - "9001:9001"
+      - "9001:9000"   
+      - "9005:9005"   
     environment:
       MINIO_ROOT_USER: minio
       MINIO_ROOT_PASSWORD: mypassword
     volumes:
-      - ./data-minio:/data
-    command: server /data --console-address ":9001"
+      - ./data-minio/minio1-data:/data
+    command: server http://minio1/data http://minio2/data http://minio3/data --console-address ":9005"
+    networks:
+      - data_network
 
+  minio2:
+    image: minio/minio:latest
+    container_name: minio2
+    ports:
+      - "9002:9000"
+    environment:
+      MINIO_ROOT_USER: minio
+      MINIO_ROOT_PASSWORD: mypassword
+    volumes:
+      - ./data-minio/minio2-data:/data
+    command: server http://minio1/data http://minio2/data http://minio3/data
+    networks:
+      - data_network
+
+  minio3:
+    image: minio/minio:latest
+    container_name: minio3
+    ports:
+      - "9003:9000"
+    environment:
+      MINIO_ROOT_USER: minio
+      MINIO_ROOT_PASSWORD: mypassword
+    volumes:
+      - ./data-minio/minio3-data:/data
+    command: server http://minio1/data http://minio2/data http://minio3/data
     networks:
       - data_network
 
@@ -21,12 +47,13 @@ services:
     container_name: awscli
     hostname: awscli
     depends_on:
-      - minio-lakehouse
+      - minio1
+      - minio2
+      - minio3
     environment:
       AWS_ACCESS_KEY_ID: minio
       AWS_SECRET_ACCESS_KEY: mypassword
     entrypoint: ["tail", "-f", "/dev/null"]
-
     networks:
       - data_network
 
