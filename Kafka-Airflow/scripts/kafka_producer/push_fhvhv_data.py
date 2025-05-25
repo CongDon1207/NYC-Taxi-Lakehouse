@@ -40,7 +40,6 @@
 import pyarrow.dataset as ds
 import json
 import time
-import random
 from kafka import KafkaProducer
 
 def stream_parquet_to_kafka(parquet_file_path, kafka_bootstrap_servers, kafka_topic, sleep_time=1, batch_min=300, batch_max=1000):
@@ -53,23 +52,41 @@ def stream_parquet_to_kafka(parquet_file_path, kafka_bootstrap_servers, kafka_to
     )
 
     print(f"Kết nối Kafka tại: {kafka_bootstrap_servers}")
-    print(f"Bắt đầu gửi tới topic: {kafka_topic}...")
+# <<<<<<< dev/MinhNhat
+#     print(f"Bắt đầu gửi tới topic: {kafka_topic}...")
 
-    total_rows = 0
-    for batch in dataset.to_batches(batch_size=batch_max):
-        df = batch.to_pandas()
+#     total_rows = 0
+#     for batch in dataset.to_batches(batch_size=batch_max):
+#         df = batch.to_pandas()
 
-        # Random kích thước batch thực tế mỗi vòng
-        actual_batch_size = random.randint(batch_min, batch_max)
-        for i in range(0, len(df), actual_batch_size):
-            batch_df = df.iloc[i:i+actual_batch_size]
-            for _, row in batch_df.iterrows():
-                producer.send(kafka_topic, value=row.to_dict())
-            producer.flush()
+#         # Random kích thước batch thực tế mỗi vòng
+#         actual_batch_size = random.randint(batch_min, batch_max)
+#         for i in range(0, len(df), actual_batch_size):
+#             batch_df = df.iloc[i:i+actual_batch_size]
+#             for _, row in batch_df.iterrows():
+#                 producer.send(kafka_topic, value=row.to_dict())
+#             producer.flush()
 
-            total_rows += len(batch_df)
-            print(f"→ Đã gửi {total_rows} dòng (batch size={len(batch_df)})")
-            time.sleep(sleep_time)
+#             total_rows += len(batch_df)
+#             print(f"→ Đã gửi {total_rows} dòng (batch size={len(batch_df)})")
+#             time.sleep(sleep_time)
 
-    print(f"✅ Gửi xong toàn bộ dữ liệu: {total_rows} dòng.")
-    producer.close()
+#     print(f"✅ Gửi xong toàn bộ dữ liệu: {total_rows} dòng.")
+#     producer.close()
+# =======
+    print(f"Bắt đầu gửi tới topic: {kafka_topic} ({total_rows} dòng)...")
+
+    row_count = 0
+    for batch in parquet_file.iter_batches(batch_size=1000):
+        records = batch.to_pydict()
+        for i in range(len(records["hvfhs_license_num"])):
+            row = {col: records[col][i] for col in records}
+            producer.send(kafka_topic, value=row)
+            row_count += 1
+
+        producer.flush()  # flush sau mỗi batch
+        print(f"→ Đã gửi {row_count}/{total_rows} dòng")
+        time.sleep(sleep_time)  # sleep sau mỗi batch
+
+    print("Gửi xong toàn bộ dữ liệu.")
+# >>>>>>> develop
