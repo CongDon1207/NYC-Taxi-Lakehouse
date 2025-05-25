@@ -95,16 +95,6 @@ dropoff_stats = (
     .withColumnRenamed("DOLocationID", "LocationID")
 )
 
-# B3. WAV trips count (pickup + dropoff)
-wav_stats = (
-  df_trips.filter(
-    (F.col("wav_request_flag")=="Y") | (F.col("access_a_ride_flag")=="Y")
-  )
-  .groupBy()
-  .pivot("PULocationID")  # tạm pivot để đếm pickup, rồi sẽ union
-  # nhưng pivot hơi phức tạp: đơn giản hơn:
-)
-
 # Thay bằng cách giống trên, tách 2 groupBy rồi cộng lại:
 wav_pu = (
   df_trips.filter((F.col("wav_request_flag")=="Y")|(F.col("access_a_ride_flag")=="Y"))
@@ -231,4 +221,3 @@ time_stats.write \
 
 # ── Cuối cùng ─────────────────────────────────────────────────────────────
 spark.stop()
-
