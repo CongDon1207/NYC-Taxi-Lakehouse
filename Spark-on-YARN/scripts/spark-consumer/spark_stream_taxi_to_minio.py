@@ -3,15 +3,12 @@ from pyspark.sql.functions import from_json, col
 from pyspark.sql.types import *
 from delta.tables import *
 
+# Tạo Spark session
 spark = SparkSession.builder \
     .appName("TaxiKafkaIngestionDelta") \
-    .master("yarn") \
-    .config("spark.sql.extensions", "io.delta.sql.DeltaSparkSessionExtension") \
-    .config("spark.sql.catalog.spark_catalog", "org.apache.spark.sql.delta.catalog.DeltaCatalog") \
-    .config("spark.sql.caseSensitive", "true") \
     .getOrCreate()
 
-
+# Schema cho dữ liệu taxi
 trip_schema = StructType([
     StructField("hvfhs_license_num", StringType(), True),
     StructField("dispatching_base_num", StringType(), True),
@@ -39,6 +36,7 @@ trip_schema = StructType([
     StructField("wav_match_flag", StringType(), True)
 ])
 
+# Đọc từ Kafka
 df_raw = spark.readStream \
     .format("kafka") \
     .option("kafka.bootstrap.servers", "broker:29092") \
@@ -46,14 +44,20 @@ df_raw = spark.readStream \
     .option("startingOffsets", "earliest") \
     .load()
 
+# Parse JSON từ Kafka value
 df_parsed = df_raw.selectExpr("CAST(value AS STRING) as json_string") \
     .select(from_json(col("json_string"), trip_schema).alias("trip")) \
     .select("trip.*")
 
+# Đường dẫn trên MinIO
+output_path = "s3a://deltalake/bronze/nyc_taxi_trips/"
+checkpoint_path = "s3a://deltalake/checkpoints/nyc_taxi_delta/"
+
+# Ghi xuống MinIO (Delta format)
 query = df_parsed.writeStream \
     .format("delta") \
-    .option("path", "hdfs://quochuy-master:9000/deltalake/bronze/nyc_taxi_trips/") \
-    .option("checkpointLocation", "hdfs://quochuy-master:9000/deltalake/checkpoints/nyc_taxi_delta/") \
+    .option("path", output_path) \
+    .option("checkpointLocation", checkpoint_path) \
     .outputMode("append") \
     .start()
 
