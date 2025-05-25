@@ -9,38 +9,37 @@ from functools import reduce
 import pyspark.sql.functions as F
 
 
-# ── 0. Khởi tạo SparkSession với hỗ trợ Delta ─────────────────────────
+# Khởi tạo SparkSession với hỗ trợ Delta
 spark = (SparkSession.builder
     .appName("Silver: Clean FHVHV")
-    .config("spark.sql.extensions", "io.delta.sql.DeltaSparkSessionExtension")
-    .config("spark.sql.catalog.spark_catalog", "org.apache.spark.sql.delta.catalog.DeltaCatalog")
+
     .getOrCreate())
 
 bronze_trips = spark.read.format("delta") \
-    .load("hdfs://quochuy-master:9000/deltalake/bronze/nyc_taxi_trips")
+    .load("s3a://deltalake/bronze/nyc_taxi_trips")
 
 zone_map = spark.read.format("delta") \
-    .load("hdfs://quochuy-master:9000/deltalake/bronze/zone_map")
+    .load("s3a://deltalake/bronze/zone_map")
 
 # Ép kiểu cột pickup_datetime thành timestamp nếu chưa có
 bronze_trips = bronze_trips.withColumn("pickup_datetime", to_timestamp("pickup_datetime"))
 
 
-# 1. Điền originating_base_num bằng dispatching_base_num nếu null
+# Điền originating_base_num bằng dispatching_base_num nếu null
 bronze_trips = bronze_trips.withColumn(
     "originating_base_num",
     when(col("originating_base_num").isNull(), col("dispatching_base_num"))
     .otherwise(col("originating_base_num"))
 )
 
-# 2. Điền dispatching_base_num bằng originating_base_num nếu null
+# Điền dispatching_base_num bằng originating_base_num nếu null
 bronze_trips = bronze_trips.withColumn(
     "dispatching_base_num",
     when(col("dispatching_base_num").isNull(), col("originating_base_num"))
     .otherwise(col("dispatching_base_num"))
 )
 
-# 3. Loại bỏ bản ghi nếu cả hai cột vẫn null (rất hiếm sau bước trên)
+# Loại bỏ bản ghi nếu cả hai cột vẫn null (rất hiếm sau bước trên)
 bronze_trips = bronze_trips.dropna(subset=["dispatching_base_num", "originating_base_num"])
 
 bronze_trips = (bronze_trips
@@ -174,11 +173,11 @@ df_clean = df_clean.join(zone_map.selectExpr("LocationID as DOLocationID", "Zone
                          on="DOLocationID", how="left")
 
 # Ghi vào Silver zone dưới dạng Delta
+
 df_clean.write \
     .format("delta") \
     .mode("overwrite") \
     .option("overwriteSchema", "true") \
-    .save("hdfs://quochuy-master:9000/deltalake/silver/fhvhv_main")
+    .save("s3a://deltalake/silver/fhvhv_main")
 
-# ── Cuối cùng ─────────────────────────────────────────────────────────────
 spark.stop()
