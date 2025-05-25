@@ -1,3 +1,5 @@
+sudo chmod -R 775 logs data plugins
+
 docker cp ./scripts/spark_consumer/spark_stream_taxi_to_hdfs.py spark-master:/opt/bitnami/spark/
 docker cp ./scripts/spark_consumer/ingest_lookup_csv.py spark-master:/opt/bitnami/spark/
 

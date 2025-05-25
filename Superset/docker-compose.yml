@@ -1,0 +1,22 @@
+services:
+  superset:
+    image: apache/superset:latest
+    container_name: superset
+    restart: unless-stopped
+    ports:
+      - "8088:8088" 
+    volumes:
+      - superset_data:/app/superset_home 
+      #- ./superset_config.py:/app/pythonpath/superset_config.py  
+    networks:
+      - data_network
+    environment:
+      - SUPERSET_SECRET_KEY=your_secure_secret_key 
+      - SUPERSET_FEATURE_EMBEDDED_SUPERSET=true
+
+volumes:
+  superset_data:  
+
+networks:
+  data_network:
+    external: true 

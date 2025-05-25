@@ -1,6 +1,6 @@
 kafka-topics --list --bootstrap-server localhost:9092
 
-kafka-topics --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 3 --topic binance_trades
+kafka-topics --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 3 --topic nyc_taxi_stream
 
-kafka-console-consumer --bootstrap-server localhost:9092 --topic binance_trades --from-beginning
+kafka-console-consumer --bootstrap-server localhost:9092 --topic nyc_taxi_stream --from-beginning
 

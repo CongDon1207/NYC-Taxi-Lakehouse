@@ -9,20 +9,8 @@ networks:
     name: data_network
     external: true 
 
-services:
-  mysql:
-    image: mysql:5.7
-    container_name: mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: metastore_db
-      MYSQL_USER: hiveuser
-      MYSQL_PASSWORD: hivepw
-    volumes:
-      - mysql-data:/var/lib/mysql
-    networks:
-      - data_network
 
+services:
 
   client:
     image: client
@@ -52,8 +40,7 @@ services:
     networks:
       - data_network
     command: /bin/bash -c "service ssh start; tail -f /dev/null"
-# NEW_WORKERS_MARKER
-# dynamic workers will be inserted here
+
   
     
   worker1:
@@ -64,6 +51,8 @@ services:
       - hdfs_datanode1:/home/hadoopquochuy/hadoop/hadoop_data/hdfs/datanode
     networks:
       - data_network
+    ports:
+      - 9881:9870
     command: /bin/bash -c "service ssh start; tail -f /dev/null"
 
   worker2:
@@ -74,12 +63,51 @@ services:
       - hdfs_datanode2:/home/hadoopquochuy/hadoop/hadoop_data/hdfs/datanode
     networks:
       - data_network
+    ports:
+      - 9882:9870
+    command: /bin/bash -c "service ssh start; tail -f /dev/null"
+
+  worker3:
+    image: worker
+    container_name: worker-huy3
+    hostname: quochuy-worker3
+    volumes:
+      - hdfs_datanode3:/home/hadoopquochuy/hadoop/hadoop_data/hdfs/datanode
+    networks:
+      - data_network
+    ports:
+      - 9883:9870
+    command: /bin/bash -c "service ssh start; tail -f /dev/null"
+
+  worker4:
+    image: worker
+    container_name: worker-huy4
+    hostname: quochuy-worker4
+    volumes:
+      - hdfs_datanode4:/home/hadoopquochuy/hadoop/hadoop_data/hdfs/datanode
+    networks:
+      - data_network
+    ports:
+      - 9884:9870
+    command: /bin/bash -c "service ssh start; tail -f /dev/null"
+
+  worker5:
+    image: worker
+    container_name: worker-huy5
+    hostname: quochuy-worker5
+    volumes:
+      - hdfs_datanode5:/home/hadoopquochuy/hadoop/hadoop_data/hdfs/datanode
+    networks:
+      - data_network
+    ports:
+      - 9885:9870
     command: /bin/bash -c "service ssh start; tail -f /dev/null"
 
 
 volumes:
-  mysql-data:
-  hive-metastore:
   hdfs_namenode:
   hdfs_datanode1:
   hdfs_datanode2:
+  hdfs_datanode3:
+  hdfs_datanode4:
+  hdfs_datanode5:

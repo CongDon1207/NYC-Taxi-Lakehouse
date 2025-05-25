@@ -28,6 +28,11 @@ RUN echo "export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64" >> /home/hadoopqu
 EXPOSE 9083
 
 COPY entrypoint.sh /entrypoint.sh
+USER root
+RUN apt-get update && apt-get install -y dos2unix
+
+RUN dos2unix /entrypoint.sh && chmod +x /entrypoint.sh
 
 ENTRYPOINT ["/entrypoint.sh"]
+
 

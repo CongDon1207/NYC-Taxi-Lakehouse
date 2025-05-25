@@ -1,4 +1,5 @@
 venv
+lakehouse-env
 logs
 data/
 lakehouse_backup/
