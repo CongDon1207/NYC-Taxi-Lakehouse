@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  trino-coordinator:
+    image: trinodb/trino:423
+    container_name: trino-coordinator
+    hostname: trino-coordinator
+    ports:
+      - "8081:8080"
+    volumes:
+      - ./trino/coordinator/etc:/etc/trino
+    networks:
+      - data_network
+    environment:
+      - HIVE_METASTORE_SERVER=hive-service
+      - HDFS_NAMENODE=quochuy-master:9000
+
+  trino-worker-1:
+    image: trinodb/trino:423
+    container_name: trino-worker-1
+    hostname: trino-worker-1
+    volumes:
+      - ./trino/worker1/etc:/etc/trino
+    networks:
+      - data_network
+    environment:
+      - HIVE_METASTORE_SERVER=hive-service
+      - HDFS_NAMENODE=quochuy-master:9000
+
+  trino-worker-2:
+    image: trinodb/trino:423
+    container_name: trino-worker-2
+    hostname: trino-worker-2
+    volumes:
+      - ./trino/worker2/etc:/etc/trino
+    networks:
+      - data_network
+    environment:
+      - HIVE_METASTORE_SERVER=hive-service
+      - HDFS_NAMENODE=quochuy-master:9000
+
+  trino-worker-3:
+    image: trinodb/trino:423
+    container_name: trino-worker-3
+    hostname: trino-worker-3
+    volumes:
+      - ./trino/worker3/etc:/etc/trino
+    networks:
+      - data_network
+    environment:
+      - HIVE_METASTORE_SERVER=hive-service
+      - HDFS_NAMENODE=quochuy-master:9000
+
+networks:
+  data_network:
+    external: true
