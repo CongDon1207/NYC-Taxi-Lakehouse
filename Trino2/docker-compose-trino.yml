@@ -1,0 +1,20 @@
+
+services:
+  trino:
+    image: trinodb/trino:423
+    container_name: trino
+    hostname: trino
+    ports:
+      - "8081:8080"
+    volumes:
+      - ./trino/etc:/etc/trino 
+      - ./hadoop-conf:/etc/hadoop/conf 
+    networks:
+      - data_network
+    environment:
+      - HIVE_METASTORE_SERVER=hive-service
+      - HDFS_NAMENODE=quochuy-master:9000
+
+networks:
+  data_network:
+    external: true
