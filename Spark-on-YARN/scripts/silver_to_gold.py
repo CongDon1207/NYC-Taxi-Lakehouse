@@ -7,15 +7,12 @@ from pyspark.sql.functions import (
 
 spark = (SparkSession.builder
     .appName("Gold–Step1: fhvhv_trips")
-    .config("spark.sql.extensions", "io.delta.sql.DeltaSparkSessionExtension")
-    .config("spark.sql.catalog.spark_catalog",
-            "org.apache.spark.sql.delta.catalog.DeltaCatalog")
     .getOrCreate())
 
 # 1. Đọc từ Silver main
 df_trips = (spark.read
     .format("delta")
-    .load("hdfs://quochuy-master:9000/deltalake/silver/fhvhv_main")
+    .load("s3a://deltalake/silver/fhvhv_main")
 )
 
 # 2. Chọn các cột fact
@@ -40,7 +37,7 @@ df_trips.write \
     .format("delta") \
     .mode("overwrite") \
     .option("overwriteSchema", "true") \
-    .save("hdfs://quochuy-master:9000/deltalake/gold/fhvhv_trips")
+    .save("s3a://deltalake/gold/fhvhv_trips")
 
 
 
@@ -49,7 +46,7 @@ df_trips.write \
 # Bước 2: Dimension fhvhv_zones, dùng lại spark đã khởi tạo
 df_zone_map = (spark.read
     .format("delta")
-    .load("hdfs://quochuy-master:9000/deltalake/bronze/zone_map")
+    .load("s3a://deltalake/bronze/zone_map")
 )
 
 df_zones = (df_zone_map
@@ -66,7 +63,7 @@ df_zones.write \
     .format("delta") \
     .mode("overwrite") \
     .option("overwriteSchema", "true") \
-    .save("hdfs://quochuy-master:9000/deltalake/gold/fhvhv_zones")
+    .save("s3a://deltalake/gold/fhvhv_zones")
 
 
 
@@ -93,16 +90,6 @@ dropoff_stats = (
       F.avg("fare_per_mile").alias("avg_fare_per_mile_do")
     )
     .withColumnRenamed("DOLocationID", "LocationID")
-)
-
-# B3. WAV trips count (pickup + dropoff)
-wav_stats = (
-  df_trips.filter(
-    (F.col("wav_request_flag")=="Y") | (F.col("access_a_ride_flag")=="Y")
-  )
-  .groupBy()
-  .pivot("PULocationID")  # tạm pivot để đếm pickup, rồi sẽ union
-  # nhưng pivot hơi phức tạp: đơn giản hơn:
 )
 
 # Thay bằng cách giống trên, tách 2 groupBy rồi cộng lại:
@@ -182,11 +169,10 @@ zone_aggregation.write \
   .format("delta") \
   .mode("overwrite") \
   .option("overwriteSchema","true") \
-  .save("hdfs://quochuy-master:9000/deltalake/gold/fhvhv_zone_stats")
+  .save("s3a://deltalake/gold/fhvhv_zone_stats")
 
 
 # fhvhv_time_stats //////////////////////////////////
-# Giả sử bạn đã có df_trips từ gold/fhvhv_trips
 
 # 1. Tính các chỉ số nhóm theo tổ hợp các cột
 time_stats = (df_trips
@@ -227,8 +213,6 @@ time_stats.write \
     .format("delta") \
     .mode("overwrite") \
     .option("overwriteSchema", "true") \
-    .save("hdfs://quochuy-master:9000/deltalake/gold/fhvhv_time_stats")
+    .save("s3a://deltalake/gold/fhvhv_time_stats")
 
-# ── Cuối cùng ─────────────────────────────────────────────────────────────
 spark.stop()
-
