@@ -4,12 +4,12 @@ from pyspark.ml.feature import VectorAssembler, StandardScaler
 from pyspark.ml.clustering import KMeans
 from pyspark.ml import Pipeline
 
-# 1. Khởi tạo SparkSession
+# Khởi tạo SparkSession
 spark = (SparkSession.builder
          .appName("Gold–KMeansClustering")
          .getOrCreate())
 
-# 2. Đọc data đã clean từ Silver và aggregate theo PULocationID
+# Đọc data đã clean từ Silver và aggregate theo PULocationID
 cluster_features = [
     "pickup_hour",
     "trip_miles",
@@ -24,7 +24,7 @@ raw = spark.read.format("delta") \
 cluster_data = raw.groupBy("PULocationID") \
     .agg(*[avg(f).alias(f) for f in cluster_features])
 
-# 3. Chuẩn bị pipeline: assemble → scale → KMeans
+# Chuẩn bị pipeline: assemble → scale → KMeans
 assembler = VectorAssembler(
     inputCols=cluster_features,
     outputCol="raw_features"
@@ -36,7 +36,7 @@ scaler = StandardScaler(
     withStd=True
 )
 
-# 4. Khởi tạo KMeans (mặc định predictionCol="prediction")
+# Khởi tạo KMeans (mặc định predictionCol="prediction")
 k_opt = 4
 kmeans = KMeans(
     featuresCol="features",
@@ -46,22 +46,22 @@ kmeans = KMeans(
 
 pipeline = Pipeline(stages=[assembler, scaler, kmeans])
 
-# 5. Fit model
+# Fit model
 model = pipeline.fit(cluster_data)
 
-# 6. Transform và đổi tên prediction → cluster_label
+# Transform và đổi tên prediction → cluster_label
 result = model.transform(cluster_data) \
     .select(
         col("PULocationID"),
         col("prediction").alias("cluster_label")
     )
 
-# 7. Lưu kết quả ra Delta Gold layer
+# Lưu kết quả ra Delta Gold layer
 result.write \
       .format("delta") \
       .mode("overwrite") \
       .option("overwriteSchema", "true") \
       .save("s3a://deltalake/gold/kmeans_clusters")
 
-# 8. Dừng Spark session
+# Dừng Spark session
 spark.stop()
