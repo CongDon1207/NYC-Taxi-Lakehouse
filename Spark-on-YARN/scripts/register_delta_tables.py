@@ -1,6 +1,6 @@
 from pyspark.sql import SparkSession
 
-# 0. Khởi tạo SparkSession với Hive support và Delta 
+# Khởi tạo SparkSession với Hive support và Delta 
 spark = (
     SparkSession.builder
     .appName("Register Delta Tables")
@@ -13,11 +13,11 @@ spark = (
     .getOrCreate()
 )
 
-# 1. Đảm bảo tồn tại các database 
+# Đảm bảo tồn tại các database 
 spark.sql("CREATE DATABASE IF NOT EXISTS silver")
 spark.sql("CREATE DATABASE IF NOT EXISTS gold")
 
-# 2. Danh sách bảng cần đăng ký 
+#  Danh sách bảng cần đăng ký 
 tables = [
     # Silver layer
     ("silver", "fhvhv_main", "s3a://deltalake/silver/fhvhv_main"),
@@ -28,7 +28,7 @@ tables = [
     ("gold", "fhvhv_time_stats",   "s3a://deltalake/gold/fhvhv_time_stats")
 ]
 
-# 3. Tạo bảng nếu chưa có
+# Tạo bảng nếu chưa có
 for db, tbl, path in tables:
     full_name = f"{db}.{tbl}"
     spark.sql(f"""
@@ -38,7 +38,7 @@ for db, tbl, path in tables:
     """.strip())
     print(f"Registered table {full_name} -> {path}")
 
-# 4. Kiểm tra danh sách bảng đã đăng ký
+#  Kiểm tra danh sách bảng đã đăng ký
 print("\nDanh sách tables in metastore:")
 spark.sql("SHOW TABLES IN silver").show(truncate=False)
 spark.sql("SHOW TABLES IN gold").show(truncate=False)
