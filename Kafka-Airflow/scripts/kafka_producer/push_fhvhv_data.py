@@ -4,7 +4,7 @@ import time
 import random
 from kafka import KafkaProducer
 
-def stream_parquet_to_kafka_with_polars(parquet_file_path, kafka_bootstrap_servers, kafka_topic, sleep_time=1, batch_min=300, batch_max=1000):
+def stream_parquet_to_kafka(parquet_file_path, kafka_bootstrap_servers, kafka_topic, sleep_time=1, batch_min=300, batch_max=1000):
     print(f"Đọc dữ liệu từ: {parquet_file_path}")
 
     # Đọc file parquet theo streaming

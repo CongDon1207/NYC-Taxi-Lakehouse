@@ -8,4 +8,5 @@ apache-airflow
 kafka-python
 websocket-client
 pyyaml
+polars
 pyarrow
