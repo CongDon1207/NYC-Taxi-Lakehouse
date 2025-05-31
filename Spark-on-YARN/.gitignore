@@ -9,3 +9,5 @@ logs/
 scripts/derby.log
 scripts/metastore.log
 scripts/metastore_db/
+config/master/config/workers
+compose-dynamic.yaml
