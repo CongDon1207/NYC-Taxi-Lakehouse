@@ -91,7 +91,7 @@ services:
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker:29092,PLAINTEXT_HOST://localhost:9092
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
     volumes:
-      - ../scripts/kafka_scripts:/opt
+      - ./scripts/kafka_scripts:/opt
     networks:
       - data_network
 
