@@ -22,6 +22,7 @@
 - **Lookup Data**: `taxi_zone_lookup.csv`, used to map location IDs (PULocationID, DOLocationID) to geographical names for regional analysis.
 
 ### Architecture
+![lakehouse](https://github.com/user-attachments/assets/f1b84e70-00ff-47f1-a56c-104f046a3097)
 
 
 The system follow a modern data lakehouse architecture is Medallion Architecture. This architecture structure data in multi layer approach (Bronze, Silver, Gold) for data processing and storage. Pipeline is organized as follows:
@@ -195,8 +196,15 @@ select * from fhvhv_trips limit 10;
 - Log in with username: `admin`, password: `AdminPassword123!`.
 - SQLAlchemy URI: trino://admin@trino-coordinator:8080
 - Import dashboard ZIP files to visualize the data.
+  
+### 6. Dashboard Preview
+- List of dashboards built to visualize data from Trino.
+- These dashboards can be imported from `.zip` files in the `dashboards/` to the Superset.
+![image](https://github.com/user-attachments/assets/50723c1c-0eae-4c9e-8172-4f40fac9b002)
+![image](https://github.com/user-attachments/assets/afeb23a7-67a3-4e56-bf7d-4f7c7c697f49)
+![image](https://github.com/user-attachments/assets/d137480d-ad2b-4adc-9fa6-62264d56aa1f)
 
 ## Contact
-Email: quochuy.working@gmail.com
-Feel free to contribute and improve this project!
+- Email: quochuy.working@gmail.com
+- Feel free to contribute and improve this project!
 
