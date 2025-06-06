@@ -191,10 +191,9 @@ select * from fhvhv_trips limit 10;
 
 ### 5. Visualize Data with Superset
 
-- Access Superset at `http://localhost:8088.
+- Access Superset at http://localhost:8088.
 - Log in with username: `admin`, password: `AdminPassword123!`.
-- SQLAlchemy URI*
-- trino://admin@trino-coordinator:8080
+- SQLAlchemy URI: trino://admin@trino-coordinator:8080
 - Import dashboard ZIP files to visualize the data.
 
 ## Contact
