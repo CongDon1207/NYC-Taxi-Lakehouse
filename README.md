@@ -210,6 +210,16 @@ select * from fhvhv_trips limit 10;
 - Nguyễn Ngọc Minh Nhật  
 - Nguyễn Tấn Hùng  
 
+### 👥 Task Assignment
+
+| STT | Họ Tên                   | Nhiệm Vụ                                                                                                                                     |
+|-----|--------------------------|----------------------------------------------------------------------------------------------------------------------------------------------|
+| 1   | **Nguyễn Tấn Hùng**      | - Chọn tập dữ liệu  <br> - Thiết kế kiến trúc  <br> - Data Ingestion & Kafka  <br> - Airflow tự động hóa quy trình  <br> - Viết mã Spark Structured Streaming (Kafka Consumer) |
+| 2   | **Nguyễn Quốc Huy**      | - Chọn tập dữ liệu  <br> - Thiết kế kiến trúc  <br> - Streaming & Processing với Spark  <br> - Thiết lập MinIO lưu trữ dữ liệu  <br> - Ghi dữ liệu vào Delta Lake (Bronze Layer) |
+| 3   | **Nguyễn Công Đôn**      | - Xử lý Silver/Gold Layer  <br> - Cấu hình Hive Metastore  <br> - Đăng ký Delta Tables vào Hive Metastore  <br> - Ứng dụng học máy tối ưu hóa phân bổ tài xế, gợi ý dịch vụ di chuyển |
+| 4   | **Nguyễn Ngọc Minh Nhật** | - Cấu hình Trino kết nối Delta Lake  <br> - Trực quan hóa dữ liệu bằng Superset |
+
+
 ## Contact
 - Email: sangdon2004@gmail.com
 - Feel free to contribute and improve this project!
