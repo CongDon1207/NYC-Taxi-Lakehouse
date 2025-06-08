@@ -204,7 +204,13 @@ select * from fhvhv_trips limit 10;
 ![image](https://github.com/user-attachments/assets/afeb23a7-67a3-4e56-bf7d-4f7c7c697f49)
 ![image](https://github.com/user-attachments/assets/d137480d-ad2b-4adc-9fa6-62264d56aa1f)
 
+### Authors  
+- Nguyễn Quốc Huy  
+- Nguyễn Công Đôn  
+- Nguyễn Ngọc Minh Nhật  
+- Nguyễn Tấn Hùng  
+
 ## Contact
-- Email: quochuy.working@gmail.com
+- Email: sangdon2004@gmail.com
 - Feel free to contribute and improve this project!
 
