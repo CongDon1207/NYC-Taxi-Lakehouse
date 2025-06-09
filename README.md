@@ -19,7 +19,7 @@
 
 ### Data
 - **Primary Data**: `fhvhv_tripdata_2019-04.parquet` from NYC TLC, contain over 20 million trip records with detail info like timestamps, locations, fares, and tips.
-- **Lookup Data**: `taxi_zone_lookup.csv`, used to map location IDs (PULocationID, DOLocationID) to geographical names for regional analysis.
+- **Lookup Data**: `taxi+_zone_lookup.csv`, used to map location IDs (PULocationID, DOLocationID) to geographical names for regional analysis.
 
 ### Architecture
 ![lakehouse](https://github.com/user-attachments/assets/f1b84e70-00ff-47f1-a56c-104f046a3097)
@@ -55,9 +55,9 @@ docker network create --driver bridge data_network
 - Build the Spark image and run containers:
 
 ```bash
-./scripts/build_image
+./scripts/build-image.sh
 chmod +x scripts/resize-number-worker.sh
-./scripts/run_container 6
+./scripts/run-container.sh 6
 ```
 
 ### 3. Set Up Kafka and Airflow
@@ -140,14 +140,14 @@ https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page
 
 - Access the Spark master container and start HDFS and YARN.
 - Create a `deltalake` bucket in MinIO for the three-layer storage (Bronze, Silver, Gold).
-- Create a `data` bucket in MinIO and upload `taxi_zone_lookup.csv` for the Bronze layer.
+- Create a `data` bucket in MinIO and upload `taxi+_zone_lookup.csv` for the Bronze layer.
 - Stream data from Kafka to the Bronze layer:
 
 ```bash
 spark-submit /home/hadoopquochuy/scripts/medal-layer/spark_stream_taxi_to_minio.py
 ```
 
-- Ingest `taxi_zone_lookup.csv` into the Bronze layer:
+- Ingest `taxi+_zone_lookup.csv` into the Bronze layer:
 
 ```bash
 spark-submit /home/hadoopquochuy/scripts/medal-layer/ingest_zone_map_csv.py
