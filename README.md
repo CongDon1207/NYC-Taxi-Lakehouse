@@ -221,6 +221,6 @@ select * from fhvhv_trips limit 10;
 
 
 ## Contact
-- Email: sangdon2004@gmail.com
+- Email: 
 - Feel free to contribute and improve this project!
 
